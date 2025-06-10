@@ -9,7 +9,10 @@ public class CanvasManager : MonoBehaviour
 {
     [Header("Main Canvas")]
     public SettingsManager settingsManager;
-    [field: SerializeField] public CanvasGroup MainCanvasGroup;
+    [field: SerializeField] public CanvasGroup MainUpButton;
+    [field: SerializeField] public CanvasGroup MainDownButton;
+    [field: SerializeField] public CanvasGroup MainCenterText;
+
     [field: SerializeField] public TMP_Text T_HighScoreText;
     [SerializeField] private GameObject centralCircular;
     [SerializeField] private Animator centralCircularAnimator;
@@ -18,6 +21,7 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public int highScore = 0;
     [field: SerializeField] public int playercoin = 0;
     public GameObject DeletePopup;
+    
     
     [Header("GameOver Canvas")]
     [field: SerializeField] public CanvasGroup GameOverCanvasGroup;
@@ -54,13 +58,17 @@ public class CanvasManager : MonoBehaviour
 
     private void startGameCanvas()
     {
-        StartCoroutine(FadeInCanvas(MainCanvasGroup, 1f)); 
+        StartCoroutine(FadeInCanvas(MainUpButton, 1f)); 
+        StartCoroutine(FadeInCanvas(MainDownButton, 1f)); 
+        StartCoroutine(FadeInCanvas(MainCenterText, 1f)); 
+        
     }
 
     public void GameStartPanelOff()
     {
-        StartCoroutine(FadeOutCanvas(MainCanvasGroup, 1f)); 
-    }
+        StartCoroutine(FadeOutCanvas(MainUpButton, 1f)); 
+        StartCoroutine(FadeOutCanvas(MainDownButton, 1f)); 
+        StartCoroutine(FadeOutCanvas(MainCenterText, 1f));     }
 
     public void GameOverPanelOn()
     {
