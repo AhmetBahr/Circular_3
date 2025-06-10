@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Ayarlar" },
+    { "key": "2", "value": "Səsi söndür" },
+    { "key": "3", "value": "Qaranlıq mövzu" },
+    { "key": "4", "value": "Çətin oyun" },
+    { "key": "5", "value": "Məlumatları sil" },
+    { "key": "6", "value": "Dil" },
+    { "key": "7", "value": "Yüksək xal" },
+    { "key": "8", "value": "Təkrar oyna" },
+    { "key": "9", "value": "Reklama bax" },
+    { "key": "10", "value": "Canlan" },
+    { "key": "11", "value": "Xal" },
+    { "key": "12", "value": "Yeni yüksək xal" },
+    { "key": "13", "value": "Dil dəyişdirilir, zəhmət olmasa gözləyin!" },
+    { "key": "14", "value": "Yüksək xal məlumatlarını silmək üzrəsiniz. Əminsiniz?" },
+    { "key": "15", "value": "Bəli" },
+    { "key": "16", "value": "Xeyr" },
+    { "key": "17", "value": "Sil" },    
+    { "key": "18", "value": "Titrəmək" },
+    { "key": "19", "value": "Dərslik" }
+  ]
+}

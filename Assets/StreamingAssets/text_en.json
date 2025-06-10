@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Settings" },
+    { "key": "2", "value": "Close Sound" },
+    { "key": "3", "value": "Dark Theme" },
+    { "key": "4", "value": "Hard Core Game" },
+    { "key": "5", "value": "Delete Data" },
+    { "key": "6", "value": "Language" },
+    { "key": "7", "value": "High Score" },
+    { "key": "8", "value": "Play Again" },
+    { "key": "9", "value": "Watch Ad" },
+    { "key": "10", "value": "Revive" },
+    { "key": "11", "value": "Score" },
+    { "key": "12", "value": "New High Score" },
+    { "key": "13", "value": "Changing language, please wait!" },
+    { "key": "14", "value": "You are about to delete your high score data. Are you sure?" },
+    { "key": "15", "value": "Yes" },
+    { "key": "16", "value": "No" },
+    { "key": "17", "value": "Delete" },    
+    { "key": "18", "value": "Vibration" },
+    { "key": "19", "value": "Tutorial" }
+  ]
+}

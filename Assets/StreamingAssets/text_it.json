@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Impostazioni" },
+    { "key": "2", "value": "Disattiva suono" },
+    { "key": "3", "value": "Tema scuro" },
+    { "key": "4", "value": "Modalità difficile" },
+    { "key": "5", "value": "Elimina dati" },
+    { "key": "6", "value": "Lingua" },
+    { "key": "7", "value": "Record" },
+    { "key": "8", "value": "Gioca di nuovo" },
+    { "key": "9", "value": "Guarda pubblicità" },
+    { "key": "10", "value": "Rianima" },
+    { "key": "11", "value": "Punteggio" },
+    { "key": "12", "value": "Nuovo record" },
+    { "key": "13", "value": "Cambio lingua, attendere prego!" },
+    { "key": "14", "value": "Stai per eliminare i dati del record. Sei sicuro?" },
+    { "key": "15", "value": "Sì" },
+    { "key": "16", "value": "No" },
+    { "key": "17", "value": "Elimina" },    
+    { "key": "18", "value": "Vibrazione" },
+    { "key": "19", "value": "Tutorial" }
+  ]
+}

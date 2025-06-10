@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Einstellungen" },
+    { "key": "2", "value": "Ton aus" },
+    { "key": "3", "value": "Dunkles Thema" },
+    { "key": "4", "value": "Hardcore-Spiel" },
+    { "key": "5", "value": "Daten löschen" },
+    { "key": "6", "value": "Sprache" },
+    { "key": "7", "value": "Höchstwert" },
+    { "key": "8", "value": "Nochmal spielen" },
+    { "key": "9", "value": "Anzeige ansehen" },
+    { "key": "10", "value": "Wiederbeleben" },
+    { "key": "11", "value": "Punktzahl" },
+    { "key": "12", "value": "Neuer Höchstwert" },
+    { "key": "13", "value": "Sprache wird geändert, bitte warten!" },
+    { "key": "14", "value": "Du wirst deine Highscore-Daten löschen. Bist du sicher?" },
+    { "key": "15", "value": "Ja" },
+    { "key": "16", "value": "Nein" },
+    { "key": "17", "value": "Löschen" },    
+    { "key": "18", "value": "Vibration" },
+    { "key": "19", "value": "Tutorial" }
+  ]
+}

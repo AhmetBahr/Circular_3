@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Ajustes" },
+    { "key": "2", "value": "Silenciar" },
+    { "key": "3", "value": "Tema Oscuro" },
+    { "key": "4", "value": "Juego Hardcore" },
+    { "key": "5", "value": "Borrar datos" },
+    { "key": "6", "value": "Idioma" },
+    { "key": "7", "value": "Puntuación más alta" },
+    { "key": "8", "value": "Jugar de nuevo" },
+    { "key": "9", "value": "Ver anuncio" },
+    { "key": "10", "value": "Revivir" },
+    { "key": "11", "value": "Puntuación" },
+    { "key": "12", "value": "Nueva puntuación más alta" },
+    { "key": "13", "value": "Cambiando el idioma, por favor espera" },
+    { "key": "14", "value": "Vas a borrar tus datos de puntuación. ¿Estás seguro?" },
+    { "key": "15", "value": "Sí" },
+    { "key": "16", "value": "No" },
+    { "key": "17", "value": "Borrar" },    
+    { "key": "18", "value": "Vibración" },
+    { "key": "19", "value": "Tutorial " }
+  ]
+}

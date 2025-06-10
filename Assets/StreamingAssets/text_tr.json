@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "key": "1", "value": "Ayarlar" },
+    { "key": "2", "value": "Sesi kapat" },
+    { "key": "3", "value": "Karanlık tema" },
+    { "key": "4", "value": "Zor oyun" },
+    { "key": "5", "value": "Dataları sil" },
+    { "key": "6", "value": "Dil" },
+    { "key": "7", "value": "Yüksek Skor" },
+    { "key": "8", "value": "Tekrar Oyna" },
+    { "key": "9", "value": "Reklam izle" },
+    { "key": "10", "value": "Canlan" },
+    { "key": "11", "value": "Skor" },
+    { "key": "12", "value": "Yeni Yüksek Skor" },
+    { "key": "13", "value": "Dil değiştiriliyor, lütfen bekleyin!" },
+    { "key": "14", "value": "Yüksek skor verilerinizi sileceksiniz. Emin misin!" },
+    { "key": "15", "value": "Evet" },
+    { "key": "16", "value": "Hayır" },
+    { "key": "17", "value": "Sil" },
+    { "key": "18", "value": "Titreşim" },
+    { "key": "19", "value": "Öğretici" }
+  ]
+}
