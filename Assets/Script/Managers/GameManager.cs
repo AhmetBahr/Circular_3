@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [field: SerializeField] private GamOverManager gameOverScript;
     [Header("Core Variables")] 
     [field: SerializeField] public int MainScore = 0;
     [field: SerializeField] public bool isGameStarted = false;

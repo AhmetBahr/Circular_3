@@ -22,12 +22,18 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public int playercoin = 0;
     public GameObject DeletePopup;
     
+    [Header("GameMenu & PauseMenu Canvas")]
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gameMenuGameObject;
+    [SerializeField] private CanvasGroup gameMenuCanvasGroup;
+
     
     [Header("GameOver Canvas")]
     [field: SerializeField] public CanvasGroup GameOverCanvasGroup;
     [field: SerializeField] public Animator GameOverAnimator;
     [field: SerializeField] public GameObject NewHighScoreText;
-
+    [field: SerializeField] public CircularProgressBar progressBar;
+    
     [Header("Panels Settings")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject shopePanel;
@@ -52,6 +58,7 @@ public class CanvasManager : MonoBehaviour
         NewHighScoreText.SetActive(false);
         playerCoinText.text = playercoin.ToString();
         T_HighScoreText.text = highScore.ToString(); 
+        gameMenuGameObject.SetActive(false);
 
             
     }
@@ -68,13 +75,17 @@ public class CanvasManager : MonoBehaviour
     {
         StartCoroutine(FadeOutCanvas(MainUpButton, 1f)); 
         StartCoroutine(FadeOutCanvas(MainDownButton, 1f)); 
-        StartCoroutine(FadeOutCanvas(MainCenterText, 1f));     }
+        StartCoroutine(FadeOutCanvas(MainCenterText, 1f));
+        
+        gameMenuGameObject.SetActive(true);
+        StartCoroutine(FadeInCanvas(gameMenuCanvasGroup, 1f));
+    }
 
     public void GameOverPanelOn()
     {
-        StartCoroutine(FadeInCanvas(GameOverCanvasGroup, 1f)); 
+        //StartCoroutine(FadeInCanvas(GameOverCanvasGroup, 1f)); 
         NewHighScoreText.SetActive(gameManager.MainScore > gameManager.highScore);
-        GameOverAnimator.SetTrigger("gameover");
+        progressBar.isActive = true;
     }
     
     private IEnumerator FadeOutCanvas(CanvasGroup canvasGroup, float duration)
@@ -181,6 +192,20 @@ public class CanvasManager : MonoBehaviour
         centralCircularAnimator.SetTrigger("endgame");
     }
 
+    public void PauseMenuOpen()
+    {
+        Time.timeScale = 0f;
+        pauseMenu.SetActive(true);
+        gameMenuGameObject.SetActive(false);
+    }
+
+    public void PauseMenuClose()
+    {
+        Time.timeScale = 1; //Daha sonra pause kapanınca geri sayım yapıcaz
+        pauseMenu.SetActive(false);
+        gameMenuGameObject.SetActive(true);
+    }
+
     public void resartScene()
     {
         SceneManager.LoadScene("GameScene");
@@ -189,11 +214,13 @@ public class CanvasManager : MonoBehaviour
     public void OpenPopUp()
     {
         DeletePopup.SetActive(true);
+        
     }
 
     public void ClosePopUp()
     {
         DeletePopup.SetActive(false);
+        
     }
     
     public void DeleteHighScore()

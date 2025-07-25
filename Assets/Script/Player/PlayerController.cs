@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [Header("Object Variables")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameManager gameManager;
-    
+    [SerializeField] private GamOverManager gameOverScript;
+
     [Header("Core Settings")]
     [SerializeField] private Transform centerPoint;
     [SerializeField] private float acceleration = 2f;
@@ -40,11 +41,19 @@ public class PlayerController : MonoBehaviour
     private float clickTimer = 0f;
     private float clickThreshold = 0.2f;
     
+    [Header("UI")]
+    [SerializeField] private Slider staminaSlider;
+    [SerializeField] private Image staminaBackground;
+
+    
     private void Start()
     {
         currentSpeed = baseSpeed;
         currentStamina = staminaMax;
         startGameButton.SetActive(false);
+        
+        staminaSlider.maxValue = staminaMax;
+        staminaSlider.value = currentStamina;
     }
 
     private void Update()
@@ -77,8 +86,7 @@ public class PlayerController : MonoBehaviour
         {
             clickTimer += Time.deltaTime;
 
-            // Eğer boost mümkünse ve click süresi eşiği geçtiyse boost başlat
-            if (clickTimer >= clickThreshold && canBoost && !isBoosting && Mathf.Approximately(currentStamina, staminaMax))
+            if (clickTimer >= clickThreshold && canBoost && !isBoosting && currentStamina > 0f)
             {
                 isBoosting = true;
                 currentSpeed = maxSpeed;
@@ -88,28 +96,28 @@ public class PlayerController : MonoBehaviour
         // Mouse butonu bırakıldı
         if (Input.GetMouseButtonUp(0))
         {
-            // Kısa tıklama yön değiştir
+            // Kısa tıklama ise yön değiştir
             if (clickTimer < clickThreshold)
             {
                 direction *= -1;
-                
                 Vector3 scale = transform.localScale;
                 scale.y *= -1;
                 transform.localScale = scale;
             }
 
-            // Boost aktifse, boostu durdur
+            // Boost varsa durdur
             if (isBoosting)
             {
                 isBoosting = false;
                 currentSpeed = baseSpeed;
                 staminaRegenTimer = 0f;
-                canBoost = false;
+                canBoost = false; // regen tamamlanmadan boost tekrar açılamasın
             }
 
             isHolding = false;
         }
     }
+
 
     //karakterin Stamina ve hız işlemleri
     private void HandleStamina()
@@ -138,14 +146,24 @@ public class PlayerController : MonoBehaviour
                     currentStamina += staminaRegenRate * Time.deltaTime;
                     currentStamina = Mathf.Min(currentStamina, staminaMax);
 
-                    if (Mathf.Approximately(currentStamina, staminaMax))
+                    if (currentStamina >= staminaMax / 2f)
                     {
                         canBoost = true;
                     }
                 }
             }
         }
+
+        // UI Güncellemeleri
+        staminaSlider.value = currentStamina;
+
+        if (currentStamina >= staminaMax / 2f)
+            staminaBackground.color = new Color(0.1f, 0.5f, 0.2f, 0.8f); // yeşilimsi
+        else
+            staminaBackground.color = new Color(0.5f, 0.1f, 0.2f, 0.5f); // kırmızımsı
     }
+
+
 
     //Oyunun başlatan, spawner ve canvalrı değiştirdiğim fonksiyon
     public void OnClickStartGameInput()
@@ -166,13 +184,14 @@ public class PlayerController : MonoBehaviour
     public void PlayerDeath()
     {
         Debug.Log("Player Death");
+        gameOverScript.fadeIn = true;
         canvasManager.GameOverPanelOn();
         gameManager.OnGameEnd();
+        gameObject.SetActive(false);
         //ToDo player objesini setactif ile kapat
         //ToDo canvasmanagerdan deathpaneli indir
         //ToDo oyunda düşman ve coin spawnını durdur ama oyun durmasın 
         //ToDo animasyon ve sesler ekle 
-        gameObject.SetActive(false);
     }
 
     //karakterin genel olark hareketi main fonksiyon
