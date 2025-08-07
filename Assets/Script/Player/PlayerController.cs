@@ -25,7 +25,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float staminaRegenRate = 1f;
     [SerializeField] private float staminaDrainRate = 1f;
     [SerializeField] private float staminaRegenDelay = 2f;
+    [SerializeField] private float staminaRegenDelayHigh = 0.75f; // %50 üstü için
     [SerializeField] private float currentStamina;
+
     private float staminaRegenTimer = 0f;
     
     [Header("Speed Settings")]
@@ -141,27 +143,54 @@ public class PlayerController : MonoBehaviour
             {
                 staminaRegenTimer += Time.deltaTime;
 
-                if (staminaRegenTimer >= staminaRegenDelay)
+                if (currentStamina >= staminaMax / 2f)
                 {
-                    currentStamina += staminaRegenRate * Time.deltaTime;
-                    currentStamina = Mathf.Min(currentStamina, staminaMax);
-
-                    if (currentStamina >= staminaMax / 2f)
+                    // %50 üzeri — kısa bir delay sonrası regen
+                    if (staminaRegenTimer >= staminaRegenDelayHigh)
                     {
+                        currentStamina += staminaRegenRate * Time.deltaTime;
+                        currentStamina = Mathf.Min(currentStamina, staminaMax);
                         canBoost = true;
+                    }
+                    else
+                    {
+                        canBoost = true; // hemen boost yapabilsin
+                    }
+                }
+                else
+                {
+                    // %50 altı — normal (uzun) delay sonrası regen
+                    if (staminaRegenTimer >= staminaRegenDelay)
+                    {
+                        currentStamina += staminaRegenRate * Time.deltaTime;
+                        currentStamina = Mathf.Min(currentStamina, staminaMax);
+
+                        if (currentStamina >= staminaMax / 2f)
+                        {
+                            canBoost = true;
+                        }
+                    }
+                    else
+                    {
+                        canBoost = false; // erken boost engelle
                     }
                 }
             }
         }
 
         // UI Güncellemeleri
-        staminaSlider.value = currentStamina;
+        if (staminaSlider != null)
+            staminaSlider.value = currentStamina;
 
-        if (currentStamina >= staminaMax / 2f)
-            staminaBackground.color = new Color(0.1f, 0.5f, 0.2f, 0.8f); // yeşilimsi
-        else
-            staminaBackground.color = new Color(0.5f, 0.1f, 0.2f, 0.5f); // kırmızımsı
+        if (staminaBackground != null)
+        {
+            if (currentStamina >= staminaMax / 2f)
+                staminaBackground.color = new Color(0.1f, 0.5f, 0.2f, 0.8f); // yeşilimsi
+            else
+                staminaBackground.color = new Color(0.5f, 0.1f, 0.2f, 0.5f); // kırmızımsı
+        }
     }
+
 
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -57,8 +58,13 @@ public static class ProgressManager
     public static void SetPlayerCoin(int coin)
     {
         var data = LoadProgress();
-        data.playercoin = Mathf.Max(data.playercoin, coin);
+        data.playercoin = coin; 
         SaveProgress(data);
+    }
+
+    public static int LoadPlayerCoin()
+    {
+        return LoadProgress().playercoin;
     }
 
     public static bool GetDarkTheme()
@@ -108,4 +114,25 @@ public static class ProgressManager
         data.selectedLanguage = languageCode;
         SaveProgress(data);
     }
+    
+    public static bool IsItemBought(string itemId)
+    {
+        var data = LoadProgress();
+        return Array.Exists(data.boughtItems, id => id == itemId);
+    }
+
+    public static void MarkItemAsBought(string itemId)
+    {
+        var data = LoadProgress();
+    
+        if (!Array.Exists(data.boughtItems, id => id == itemId))
+        {
+            var list = new System.Collections.Generic.List<string>(data.boughtItems);
+            list.Add(itemId);
+            data.boughtItems = list.ToArray();
+            SaveProgress(data);
+        }
+    }
+
+    
 }

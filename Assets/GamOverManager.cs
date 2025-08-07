@@ -7,16 +7,12 @@ using UnityEngine.UI;
 public class GamOverManager : MonoBehaviour
 {
     [Header("Text Elements and Buttons")]
-    //public TMP_Text currentScoreText;
     public Button restartButton;
     public Button AdmobButton;
-
     //[SerializeField] private string key;
     
     [Header("Object References")]
     public CanvasGroup deathCanvasGroup;
-    public GameManager gameManager;
-    public Animator deathAnimator;
     [SerializeField] private CanvasManager canvasManager;    
     
     [Header("Controller References")]
@@ -26,7 +22,7 @@ public class GamOverManager : MonoBehaviour
     // { 
     //     currentScoreText.text = score.ToString() +" "+ LanguageManager.Instance.GetLocalizedValue(key);
     // }
-    //
+    
     private void Update()
     {
         if (fadeIn)

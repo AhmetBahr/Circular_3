@@ -12,14 +12,12 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public CanvasGroup MainUpButton;
     [field: SerializeField] public CanvasGroup MainDownButton;
     [field: SerializeField] public CanvasGroup MainCenterText;
-
+    [field: SerializeField] public TMP_Text playerCoinText;
     [field: SerializeField] public TMP_Text T_HighScoreText;
+
     [SerializeField] private GameObject centralCircular;
     [SerializeField] private Animator centralCircularAnimator;
     [SerializeField] private GameManager gameManager;
-    [SerializeField] private TMP_Text playerCoinText;
-    [field: SerializeField] public int highScore = 0;
-    [field: SerializeField] public int playercoin = 0;
     public GameObject DeletePopup;
     
     [Header("GameMenu & PauseMenu Canvas")]
@@ -46,9 +44,6 @@ public class CanvasManager : MonoBehaviour
     private void OnEnable()
     {
         var progress = ProgressManager.LoadProgress();
-
-        highScore = progress.highScore;
-        playercoin = progress.playercoin;
         
     }
     
@@ -56,11 +51,12 @@ public class CanvasManager : MonoBehaviour
     {
         Invoke(nameof(startGameCanvas),1.5f);
         NewHighScoreText.SetActive(false);
-        playerCoinText.text = playercoin.ToString();
-        T_HighScoreText.text = highScore.ToString(); 
+        playerCoinText.text = gameManager.playercoin.ToString();
+        T_HighScoreText.text = gameManager.highScore.ToString(); 
         gameMenuGameObject.SetActive(false);
 
-            
+        int currentCoin = ProgressManager.GetPlayerCoin();
+        UpdateCoinUI(currentCoin);
     }
 
     private void startGameCanvas()
@@ -83,7 +79,6 @@ public class CanvasManager : MonoBehaviour
 
     public void GameOverPanelOn()
     {
-        //StartCoroutine(FadeInCanvas(GameOverCanvasGroup, 1f)); 
         NewHighScoreText.SetActive(gameManager.MainScore > gameManager.highScore);
         progressBar.isActive = true;
     }
@@ -228,6 +223,11 @@ public class CanvasManager : MonoBehaviour
         ProgressManager.ResetProgress();
         SceneManager.LoadScene("GameScene");
         
+    }
+    
+    public void UpdateCoinUI(int currentCoin)
+    {
+        playerCoinText.text = currentCoin.ToString();
     }
 
 }

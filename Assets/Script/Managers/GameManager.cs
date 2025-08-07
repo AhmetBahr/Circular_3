@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance{get ; private set;}
+    
     [field: SerializeField] private GamOverManager gameOverScript;
     [Header("Core Variables")] 
     [field: SerializeField] public int MainScore = 0;
@@ -14,12 +16,16 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public int playercoin = 0;
     
     public bool isSoundOpen;
-
+    public CanvasManager canvasManager;
     
     [Header("Text Variables")]
     [field: SerializeField] public TMP_Text mainScoreText;
     [field: SerializeField] public GameObject MainScoreTextGameObject;
-    //public TMP_Text T_ButtonCountText;
+    
+    private void Awake()
+    {
+        Instance = this;
+    }
     
     private void OnEnable()
     {
@@ -33,19 +39,26 @@ public class GameManager : MonoBehaviour
     {
         MainScore = 0;   
         mainScoreText.text = MainScore.ToString();
-        
+        playercoin = 0;
     }
-
-
+    
     public void OnGameEnd()
     {
         if (MainScore > highScore)
         {
             highScore = MainScore;
             ProgressManager.SetHighScore(highScore);
-            
         }
-        ProgressManager.SetPlayerCoin(playercoin);
+
+  
+        int coinBeforeGame = ProgressManager.GetPlayerCoin();   // Satın alma sonrası coin
+        int coinGainedDuringGame = playercoin;                  // Oyun içi toplanan para
+
+        int newTotal = coinBeforeGame + coinGainedDuringGame;
+        ProgressManager.SetPlayerCoin(newTotal);                // Kalıcı olarak yaz
+
+        //Debug.Log($"Game End: Önceki coin: {coinBeforeGame}, Kazanılan: {coinGainedDuringGame}, Toplam: {newTotal}");
     }
-    
+
+
 }
