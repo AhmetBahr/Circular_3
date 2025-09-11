@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public CanvasGroup MainUpButton;
     [field: SerializeField] public CanvasGroup MainDownButton;
     [field: SerializeField] public CanvasGroup MainCenterText;
-    [field: SerializeField] public TMP_Text playerCoinText;
+    [field: SerializeField] public TMP_Text [] playerCoinText;
     [field: SerializeField] public TMP_Text T_HighScoreText;
 
     [SerializeField] private GameObject centralCircular;
@@ -51,7 +52,8 @@ public class CanvasManager : MonoBehaviour
     {
         Invoke(nameof(startGameCanvas),1.5f);
         NewHighScoreText.SetActive(false);
-        playerCoinText.text = gameManager.playercoin.ToString();
+        playerCoinText[0].text = gameManager.playercoin.ToString();
+        playerCoinText[1].text = gameManager.playercoin.ToString();
         T_HighScoreText.text = gameManager.highScore.ToString(); 
         gameMenuGameObject.SetActive(false);
 
@@ -183,8 +185,9 @@ public class CanvasManager : MonoBehaviour
 
     public void OnClickRestartGame()
     {
-        Invoke(nameof(resartScene), 1.5f);   
-        centralCircularAnimator.SetTrigger("endgame");
+        Invoke(nameof(resartScene), 0.5f);   
+        Time.timeScale = 1;
+        //centralCircularAnimator.SetTrigger("endgame");
     }
 
     public void PauseMenuOpen()
@@ -227,7 +230,8 @@ public class CanvasManager : MonoBehaviour
     
     public void UpdateCoinUI(int currentCoin)
     {
-        playerCoinText.text = currentCoin.ToString();
+        playerCoinText[0].text  = currentCoin.ToString();
+        playerCoinText[1].text  = currentCoin.ToString();
     }
 
 }

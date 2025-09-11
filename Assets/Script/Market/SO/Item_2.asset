@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Item_2
   itemID: 2
-  itemPrice: 15
+  itemPrice: 6
   itemIcon: {fileID: 21300000, guid: 31c817649cea70d4285bea7b56a0869c, type: 3}
   backGround_1: {fileID: 21300000, guid: fa43799a6b241ea4caebbd74eb0bc2d4, type: 3}
   backGround_2: {fileID: 21300000, guid: 1ddecd35ad3e97c4ba705f207cd7afb2, type: 3}

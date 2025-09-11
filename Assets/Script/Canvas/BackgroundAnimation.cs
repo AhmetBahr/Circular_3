@@ -1,31 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundAnimation : MonoBehaviour
+public class BackgroundLooper : MonoBehaviour
 {
-    [SerializeField] private GameObject background_1;
-    [SerializeField] private GameObject background_2;
+    [SerializeField] private Transform bgA;     // SpriteRenderer taşıyan objeler
+    [SerializeField] private Transform bgB;
+    [SerializeField] private float moveSpeed = 5f;    // world units / sn
+    [SerializeField] private float leftThresholdX = -2150f; // bu eşiğin SOLUNA tamamen çıkınca respawn
 
-    [SerializeField] private float moveSpeed = 100f;
-    [SerializeField] private float resetX = -3000f;
-    [SerializeField] private float offsetX = 6000f; // reset sonrası taşınacağı mesafe
+    float wA, wB;
+
+    void Start()
+    {
+        // Genişlikleri bir kez ölç (scale dahil gerçek genişlik)
+        wA = GetWidth(bgA);
+        wB = GetWidth(bgB);
+        // Başlangıçta asla “düzeltme/ışınlama” yapma — ilk frame zıplaması olmasın
+    }
 
     void Update()
-    { 
-        MoveBackground(background_1);
-        MoveBackground(background_2);
-        
-    }
-
-    private void MoveBackground(GameObject bg)
     {
-        bg.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-        //Debug.Log(bg.transform.position.x);
-        if (bg.transform.position.x <= resetX)
+        float dx = moveSpeed * Time.deltaTime;
+
+        // ikisini de sola kaydır
+        bgA.position += Vector3.left * dx;
+        bgB.position += Vector3.left * dx;
+
+        // A tamamen sol eşiğin dışına çıktıysa, B'nin sağına al
+        if (Right(bgA, wA) <= leftThresholdX)
         {
-            bg.transform.position += new Vector3(offsetX, 0f, 0f);
+            float bRight = Right(bgB, wB);
+            bgA.position = new Vector3(bRight + wA * 0.5f, bgA.position.y, bgA.position.z);
+        }
+
+        // B tamamen sol eşiğin dışına çıktıysa, A'nın sağına al
+        if (Right(bgB, wB) <= leftThresholdX)
+        {
+            float aRight = Right(bgA, wA);
+            bgB.position = new Vector3(aRight + wB * 0.5f, bgB.position.y, bgB.position.z);
         }
     }
-    
+
+    // yardımcılar
+    float GetWidth(Transform t)
+    {
+        var sr = t.GetComponent<SpriteRenderer>();
+        if (!sr)
+        {
+            Debug.LogError("SpriteRenderer yok: " + t.name);
+            return 0f;
+        }
+        return sr.bounds.size.x; // scale dahil
+    }
+
+    float Right(Transform t, float w) => t.position.x + w * 0.5f;
 }
