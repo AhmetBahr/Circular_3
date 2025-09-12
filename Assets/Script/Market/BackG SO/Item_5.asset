@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_5
   m_EditorClassIdentifier: 
   itemName: Item_5
-  itemID: 5
+  itemID: BG_5
   itemPrice: 8
   itemIcon: {fileID: 21300000, guid: 960b216ded24c054d887aea0b89c8c43, type: 3}
   backGround_1: {fileID: 21300000, guid: 4b42771027c97cc49a426515ba03e716, type: 3}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
+  m_Name: MagmaOrb
+  m_EditorClassIdentifier: 
+  skinId: Skinn_5
+  displayName: Magma Orb
+  icon: {fileID: -1516922368, guid: 216a8fbf2b2dd624a91aaa7fc9301b61, type: 3}
+  price: 5
+  blendIndex: 5

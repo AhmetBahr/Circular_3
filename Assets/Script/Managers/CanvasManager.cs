@@ -44,9 +44,16 @@ public class CanvasManager : MonoBehaviour
     
     private void OnEnable()
     {
+        ProgressManager.OnCoinsChanged += UpdateCoinUI;
+        UpdateCoinUI(ProgressManager.GetPlayerCoin()); // ilk değer
         var progress = ProgressManager.LoadProgress();
-        
     }
+
+    private void OnDisable()
+    {
+        ProgressManager.OnCoinsChanged -= UpdateCoinUI;
+    }
+
     
     private void Start()
     {

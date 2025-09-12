@@ -11,6 +11,9 @@ public class PlayerProgressData
     public bool isSoundOpen = true;
 
     public string selectedLanguage = "EN";
-    
+
     public string[] boughtItems = new string[0];
+
+    // Skin mağazası için
+    public string selectedSkinId = "";
 }
