@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Slider staminaSlider;
     [SerializeField] private Image staminaBackground;
+    [SerializeField] private StaminaSegmentedUI staminaUI;
     
     [Header("Spin Settings (Z)")]
     [SerializeField] private float spinSpeedDegPerSec = 180f; // X hızın (°/sn)
@@ -56,9 +57,8 @@ public class PlayerController : MonoBehaviour
         currentSpeed = baseSpeed;
         currentStamina = staminaMax;
         startGameButton.SetActive(false);
-        
-        staminaSlider.maxValue = staminaMax;
-        staminaSlider.value = currentStamina;
+
+        if (staminaUI != null) staminaUI.Init(staminaMax);
     }
 
     private void Update()
@@ -122,11 +122,11 @@ public class PlayerController : MonoBehaviour
     //karakterin Stamina ve hız işlemleri
     private void HandleStamina()
     {
+        // --- mevcut stamina mantığın aynen kalsın ---
         if (isBoosting)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
             currentStamina = Mathf.Max(currentStamina, 0f);
-
             if (Mathf.Approximately(currentStamina, 0f))
             {
                 isBoosting = false;
@@ -143,7 +143,6 @@ public class PlayerController : MonoBehaviour
 
                 if (currentStamina >= staminaMax / 2f)
                 {
-                    // %50 üzeri — kısa bir delay sonrası regen
                     if (staminaRegenTimer >= staminaRegenDelayHigh)
                     {
                         currentStamina += staminaRegenRate * Time.deltaTime;
@@ -152,46 +151,30 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        canBoost = true; // hemen boost yapabilsin
+                        canBoost = true;
                     }
                 }
                 else
                 {
-                    // %50 altı — normal (uzun) delay sonrası regen
                     if (staminaRegenTimer >= staminaRegenDelay)
                     {
                         currentStamina += staminaRegenRate * Time.deltaTime;
                         currentStamina = Mathf.Min(currentStamina, staminaMax);
-
-                        if (currentStamina >= staminaMax / 2f)
-                        {
-                            canBoost = true;
-                        }
+                        if (currentStamina >= staminaMax / 2f) canBoost = true;
                     }
                     else
                     {
-                        canBoost = false; // erken boost engelle
+                        canBoost = false;
                     }
                 }
             }
         }
 
-        // UI Güncellemeleri
-        if (staminaSlider != null)
-            staminaSlider.value = currentStamina;
-
-        if (staminaBackground != null)
-        {
-            if (currentStamina >= staminaMax / 2f)
-                staminaBackground.color = new Color(0.1f, 0.5f, 0.2f, 0.8f); // yeşilimsi
-            else
-                staminaBackground.color = new Color(0.5f, 0.1f, 0.2f, 0.5f); // kırmızımsı
-        }
+        // --- YENİ: segmented UI güncelle ---
+        if (staminaUI != null)
+            staminaUI.UpdateUI(currentStamina);
     }
-
-
-
-
+    
     //Oyunun başlatan, spawner ve canvalrı değiştirdiğim fonksiyon
     public void OnClickStartGameInput()
     {
