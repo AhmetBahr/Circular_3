@@ -16,4 +16,6 @@ public class PlayerProgressData
 
     // Skin mağazası için
     public string selectedSkinId = "";
+    public string selectedBackgroundId = "";
+
 }

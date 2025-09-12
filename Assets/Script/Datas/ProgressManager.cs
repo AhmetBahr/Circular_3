@@ -166,4 +166,17 @@ public static class ProgressManager
         _cache.selectedSkinId = skinId ?? "";
         SaveProgress(_cache);
     }
+    public static string GetSelectedBackgroundId()
+    {
+        EnsureLoaded();
+        return _cache.selectedBackgroundId ?? "";
+    }
+
+    public static void SetSelectedBackgroundId(string id)
+    {
+        EnsureLoaded();
+        _cache.selectedBackgroundId = id ?? "";
+        SaveProgress(_cache);
+    }
+
 }
