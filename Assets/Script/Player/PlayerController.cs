@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
     public void OnClickStartGameInput()
     {
         startGameButton.SetActive(false);
-        Debug.Log("OnClickStartGameInput");
+        //Debug.Log("OnClickStartGameInput");
         if (!gameManager.isGameStarted)
         {
             gameManager.MainScoreTextGameObject.SetActive(true);
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
     //Enemy objesine çarptığı zaman çalışıcak fonksiyon
     public void PlayerDeath()
     {
-        Debug.Log("Player Death");
+       // Debug.Log("Player Death");
         gameOverScript.fadeIn = true;
         canvasManager.GameOverPanelOn();
         gameManager.OnGameEnd();

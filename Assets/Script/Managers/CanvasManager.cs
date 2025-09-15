@@ -183,13 +183,30 @@ public class CanvasManager : MonoBehaviour
     public void OnClickShopePanel()
     {
         shopePanel.SetActive(true);
+
+        // Main UI’ı anında kapat
+        SetCanvasGroupInstant(MainUpButton, 0f, false);
+        SetCanvasGroupInstant(MainDownButton, 0f, false);
+        SetCanvasGroupInstant(MainCenterText, 0f, false);
     }
-    
+
     public void OnclickCloseShopePanel()
     {
         shopePanel.SetActive(false);
-    }
 
+        // Main UI’ı anında aç
+        SetCanvasGroupInstant(MainUpButton, 1f, true);
+        SetCanvasGroupInstant(MainDownButton, 1f, true);
+        SetCanvasGroupInstant(MainCenterText, 1f, true);
+    }
+    
+    private void SetCanvasGroupInstant(CanvasGroup canvasGroup, float alpha, bool interactable)
+    {
+        canvasGroup.alpha = alpha;
+        canvasGroup.interactable = interactable;
+        canvasGroup.blocksRaycasts = interactable;
+    }
+    
     public void OnClickRestartGame()
     {
         Invoke(nameof(resartScene), 0.5f);   

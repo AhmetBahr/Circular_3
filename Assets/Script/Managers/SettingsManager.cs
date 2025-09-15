@@ -10,22 +10,39 @@ public class SettingsManager : MonoBehaviour
     [Header("Options References")]
     public Slider SoundSlider;
     public ToggleSwitch SoundSliderToogle;
+    public ToggleSwitch VibrationToggle; // vibrasyon için toggle referansı
     
+    private void Start()
+    {
+        VibrationManager.LoadSettings();
+        // buradan toggle UI güncellemesi yapabilirsin
+    }
     
     public void SoundToggleOn()
     {
-        //AudioManager.instance.sfxSource.mute = !AudioManager.instance.sfxSource.mute;
         AudioManager.instance.sfxSource.mute = true;
         PlayerPrefs.SetInt("SoundMode", 1);
         print("Ses Açıldı");
-
     }
 
     public void SoundToggleOff()
     {
-        //AudioManager.instance.sfxSource.mute = !AudioManager.instance.sfxSource.mute;
         PlayerPrefs.SetInt("SoundMode", 0);
         AudioManager.instance.sfxSource.mute = false;
         print("Ses kapandı");
+    }
+
+    public void VibrationToggleOn()
+    {
+        VibrationManager.isVibrationOn = true;
+        VibrationManager.SaveSettings();
+        print("Titreşim Açıldı");
+    }
+
+    public void VibrationToggleOff()
+    {
+        VibrationManager.isVibrationOn = false;
+        VibrationManager.SaveSettings();
+        print("Titreşim Kapandı");
     }
 }

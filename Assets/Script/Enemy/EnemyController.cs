@@ -174,6 +174,7 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            VibrationManager.VibrateDeath();
             playerController.PlayerDeath();
             gameObject.SetActive(false);
         }
