@@ -22,7 +22,6 @@ public static class ProgressManager
             }
             catch
             {
-                // bozuk dosya vb. durumda yeni veri oluştur
                 _cache = new PlayerProgressData();
                 SaveProgress(_cache);
             }
@@ -35,8 +34,15 @@ public static class ProgressManager
 
         // null safe
         if (_cache.boughtItems == null) _cache.boughtItems = new string[0];
-        if (_cache.selectedLanguage == null) _cache.selectedLanguage = "EN";
+        if (_cache.selectedLanguage == null) _cache.selectedLanguage = "";
         if (_cache.selectedSkinId == null) _cache.selectedSkinId = "";
+        if (_cache.selectedBackgroundId == null) _cache.selectedBackgroundId = "";
+        
+        if (_cache.isSfxOpen != _cache.isSoundOpen)
+        {
+            _cache.isSfxOpen = _cache.isSoundOpen;
+            SaveProgress(_cache);
+        }
     }
 
     public static PlayerProgressData LoadProgress()
@@ -130,6 +136,16 @@ public static class ProgressManager
 
     public static string GetLanguage() { EnsureLoaded(); return _cache.selectedLanguage; }
     public static void SetLanguage(string code) { EnsureLoaded(); _cache.selectedLanguage = code ?? "EN"; SaveProgress(_cache); }
+    
+    // ---------------- Settings (Music / SFX / Vibration) ----------------
+    public static bool GetMusicOpen() { EnsureLoaded(); return _cache.isMusicOpen; }
+    public static void SetMusicOpen(bool v) { EnsureLoaded(); _cache.isMusicOpen = v; SaveProgress(_cache); }
+
+    public static bool GetSfxOpen() { EnsureLoaded(); return _cache.isSfxOpen; }
+    public static void SetSfxOpen(bool v) { EnsureLoaded(); _cache.isSfxOpen = v; _cache.isSoundOpen = v; SaveProgress(_cache); } // eski alanı da güncelle
+
+    public static bool GetVibrationOpen() { EnsureLoaded(); return _cache.isVibrationOn; }
+    public static void SetVibrationOpen(bool v) { EnsureLoaded(); _cache.isVibrationOn = v; SaveProgress(_cache); }
 
     // ---------------- Shop: Ownership ----------------
     public static bool IsItemBought(string itemId)

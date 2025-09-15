@@ -136,4 +136,45 @@ using UnityEngine.UI;
 
             _slider.value = endValue;
         }
+        
+
+        public void SetIsOnWithoutNotify(bool isOn, bool animate = true)
+        {
+            // Event tetiklemeden UI durumunu senkronla
+            _previousValue = CurrentValue;
+            CurrentValue = isOn;
+
+            if (_animateSliderCoroutine != null)
+                StopCoroutine(_animateSliderCoroutine);
+
+            if (animate)
+                _animateSliderCoroutine = StartCoroutine(AnimateSlider());
+            else
+                _slider.value = sliderValue = isOn ? 1f : 0f;
+        }
+        
+        public void SetIsOn(bool isOn, bool animate = true)
+        {
+            bool changed = (CurrentValue != isOn);
+
+            _previousValue = CurrentValue;
+            CurrentValue = isOn;
+
+            if (changed)
+            {
+                if (CurrentValue) onToggleOn?.Invoke();
+                else              onToggleOff?.Invoke();
+            }
+
+            if (_animateSliderCoroutine != null)
+                StopCoroutine(_animateSliderCoroutine);
+
+            if (animate)
+                _animateSliderCoroutine = StartCoroutine(AnimateSlider());
+            else
+                _slider.value = sliderValue = isOn ? 1f : 0f;
+        }
+
     }
+
+

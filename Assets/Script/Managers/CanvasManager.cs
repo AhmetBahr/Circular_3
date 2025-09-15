@@ -134,20 +134,8 @@ public class CanvasManager : MonoBehaviour
     {
         settingsPanel.SetActive(true);
         
-        if (gameManager.isSoundOpen)
-        {
-            settingsManager.SoundSlider.value = 1;
-            settingsManager.SoundSliderToogle.sliderValue = 1;
-            settingsManager.SoundSliderToogle.CurrentValue = true;
-        }
-        else
-        {
-            settingsManager.SoundSlider.value = 0;
-            settingsManager.SoundSliderToogle.sliderValue = 0;
-            settingsManager.SoundSliderToogle.CurrentValue = false;
-
-        }
     }
+
 
     public void OnclickCloseSettingPanel()
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VibrationManager : MonoBehaviour
 {
-    public static bool isVibrationOn = true; // default açık
+    public static bool isVibrationOn = true;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
     private static AndroidJavaObject unityActivity;
@@ -20,58 +20,27 @@ public class VibrationManager : MonoBehaviour
     }
 #endif
 
-    /// <summary>
-    /// Basit titreşim (ms cinsinden).
-    /// </summary>
     public static void Vibrate(long milliseconds)
     {
-        if (!isVibrationOn) return; // 🔹 kapalıysa hiçbir şey yapma
+        if (!isVibrationOn) return;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        if (vibrator != null)
-        {
-            vibrator.Call("vibrate", milliseconds);
-        }
+        if (vibrator != null) vibrator.Call("vibrate", milliseconds);
 #elif UNITY_IOS && !UNITY_EDITOR
         Handheld.Vibrate();
-#else
-        //Debug.Log("Vibration not supported in editor.");
 #endif
     }
 
-    /// <summary>
-    /// Kısa titreşim (ör: doğru item aldığında).
-    /// </summary>
-    public static void VibrateShort()
-    {
-        if (!isVibrationOn) return;
-        Debug.Log("Kısa Titreşim");
-        Vibrate(50);
-    }
+    public static void VibrateShort()  { Vibrate(50);  }
+    public static void VibrateDeath()  { Vibrate(150); }
 
-    /// <summary>
-    /// Uzun titreşim (ör: öldüğünde).
-    /// </summary>
-    public static void VibrateDeath()
-    {
-        if (!isVibrationOn) return;
-        Debug.Log("Uzun Titreşim");
-        Vibrate(150);
-    }
-
-    /// <summary>
-    /// PlayerPrefs’ten yükle.
-    /// </summary>
     public static void LoadSettings()
     {
-        isVibrationOn = PlayerPrefs.GetInt("VibrationMode", 1) == 1;
+        isVibrationOn = ProgressManager.GetVibrationOpen();
     }
 
-    /// <summary>
-    /// Ayarı kaydet.
-    /// </summary>
     public static void SaveSettings()
     {
-        PlayerPrefs.SetInt("VibrationMode", isVibrationOn ? 1 : 0);
+        ProgressManager.SetVibrationOpen(isVibrationOn);
     }
 }

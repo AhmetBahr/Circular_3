@@ -8,14 +8,19 @@ public class PlayerProgressData
 
     public bool isDarkTheme = false;
     public bool isHardCore = false;
-    public bool isSoundOpen = true;
+
+    // Eski alan (geri uyum için tutuyoruz)
+    public bool isSoundOpen = true;   // <- isSfxOpen yerine eski projede kullanıldıysa bozulmasın
+
+    // YENİ: ayrı anahtarlar
+    public bool isMusicOpen = true;
+    public bool isSfxOpen = true;
+    public bool isVibrationOn = true;
 
     public string selectedLanguage = "EN";
-
     public string[] boughtItems = new string[0];
 
     // Skin mağazası için
     public string selectedSkinId = "";
     public string selectedBackgroundId = "";
-
 }

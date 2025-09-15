@@ -103,8 +103,9 @@ public class PlayerController : MonoBehaviour
 
                 // (İsteğe bağlı) görsel flip aynı kalsın:
                 Vector3 scale = transform.localScale;
-                scale.y *= -1;
+               //scale.y *= -1;
                 transform.localScale = scale;
+                AudioManager.instance.PlaySfx(SfxEvent.Swing);
             }
 
             if (isBoosting)
@@ -193,16 +194,21 @@ public class PlayerController : MonoBehaviour
     //Enemy objesine çarptığı zaman çalışıcak fonksiyon
     public void PlayerDeath()
     {
-       // Debug.Log("Player Death");
+        // Ses & haptics
+        AudioManager.instance?.PlaySfx(SfxEvent.Death);
+        VibrationManager.VibrateDeath();
+
+        // Oyun flow
         gameOverScript.fadeIn = true;
         canvasManager.GameOverPanelOn();
         gameManager.OnGameEnd();
+
         gameObject.SetActive(false);
-        //ToDo player objesini setactif ile kapat
-        //ToDo canvasmanagerdan deathpaneli indir
-        //ToDo oyunda düşman ve coin spawnını durdur ama oyun durmasın 
-        //ToDo animasyon ve sesler ekle 
+
+        // TODO: düşman/coin spawner durdur (oyun durmadan)
+        // TODO: animasyonlar
     }
+
 
     //karakterin genel olark hareketi main fonksiyon
     private void MovePlayer()

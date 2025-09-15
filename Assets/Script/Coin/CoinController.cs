@@ -91,12 +91,14 @@ public class CoinController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             VibrationManager.VibrateShort();
+            AudioManager.instance.PlaySfx(SfxEvent.Pickup);
+
             gameManager.MainScore++;
             gameManager.mainScoreText.text = gameManager.MainScore.ToString();
             gameManager.playercoin++;
-            // TODO: player objesine coin arttır
-            // TODO: ses ekle
+            
             // TODO: tatlı bir yok olma animasyonu ekle
+            
             gameObject.SetActive(false);
         }
     }
