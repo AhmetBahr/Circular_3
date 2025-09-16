@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Item 1
   itemID: BG_1
   itemPrice: 5
-  itemIcon: {fileID: -5177388603050735206, guid: dd9df63ef18c5d34bb9c90f0e9a5a756, type: 3}
+  itemIcon: {fileID: 21300000, guid: 38959ee8bfe52a84489d8f806ec101c8, type: 3}
   backGround_1: {fileID: 21300000, guid: a1df765378694b745a40a62662f6d330, type: 3}
   backGround_2: {fileID: 21300000, guid: 9e883b58e99e17d4da72feb5582b85ba, type: 3}
   backGround_3: {fileID: 21300000, guid: d158dee428ede24448d1cba23db5380d, type: 3}

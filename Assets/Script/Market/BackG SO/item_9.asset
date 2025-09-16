@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f93d0336ffa91a14680137d81b8c0d1e, type: 3}
+  m_Name: item_9
+  m_EditorClassIdentifier: 
+  itemName: item_9
+  itemID: BG_9
+  itemPrice: 10
+  itemIcon: {fileID: 21300000, guid: 8296f1d4c8077274aa3cf5e0914365dc, type: 3}
+  backGround_1: {fileID: 21300000, guid: 0c7da0b35274e1d41bd34a5bce716e80, type: 3}
+  backGround_2: {fileID: 21300000, guid: a334026e3ad503046bd80c4864a73ba4, type: 3}
+  backGround_3: {fileID: 21300000, guid: d6cb65b3f64e55d47984515f98bc4a0a, type: 3}
+  backGround_4: {fileID: 21300000, guid: f6cd030c06734c24dadb26897d22fdb5, type: 3}
