@@ -32,7 +32,7 @@ public class PlayerSkinCardUI : MonoBehaviour
         _onPurchase = onPurchase;
         _onSelect = onSelect;
 
-        if (itemNameText) itemNameText.text = data.displayName;
+       // if (itemNameText) itemNameText.text = data.displayName;
         if (iconImage) iconImage.sprite = data.icon;
 
         // Butonları wire et

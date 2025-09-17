@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DarkOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_9
-  displayName: Dark Orb
+  displayName: 
   icon: {fileID: 309177100, guid: 36fe359f792513c49aa904ad7c73b529, type: 3}
   price: 10
   blendIndex: 9

@@ -1,14 +1,14 @@
 {
   "items": [
     { "key": "1", "value": "Ayarlar" },
-    { "key": "2", "value": "Sesi kapat" },
+    { "key": "2", "value": "Sesi Aç" },
     { "key": "3", "value": "Karanlık tema" },
     { "key": "4", "value": "Zor oyun" },
     { "key": "5", "value": "Dataları sil" },
     { "key": "6", "value": "Dil" },
     { "key": "7", "value": "Yüksek Skor" },
     { "key": "8", "value": "Tekrar Oyna" },
-    { "key": "9", "value": "Reklam izle" },
+    { "key": "9", "value": "Reklam izle ve" },
     { "key": "10", "value": "Canlan" },
     { "key": "11", "value": "Skor" },
     { "key": "12", "value": "Yeni Yüksek Skor" },
@@ -18,6 +18,14 @@
     { "key": "16", "value": "Hayır" },
     { "key": "17", "value": "Sil" },
     { "key": "18", "value": "Titreşim" },
-    { "key": "19", "value": "Öğretici" }
+    { "key": "19", "value": "Öğretici" },
+    { "key": "20", "value": "Müziği Aç" },
+    { "key": "21", "value": "Seç" },
+    { "key": "22", "value": "Seçili" },
+    { "key": "23", "value": "Market" },
+    { "key": "24", "value": "Tekrar Başlat" },
+    { "key": "25", "value": "Devam et" },
+    { "key": "Item_1", "value": "Beyaz" },
+    { "key": "Skin_2", "value": "Hava" }
   ]
 }

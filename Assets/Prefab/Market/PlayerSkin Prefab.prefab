@@ -490,6 +490,8 @@ MonoBehaviour:
   selectedBg: {r: 0.2, g: 0.7, b: 0.6, a: 1}
   buyButton: {fileID: 336784713664170085}
   buyPriceText: {fileID: 4921988025152775685}
+  selectKey: 21
+  selectedKey: 22
 --- !u!1 &4245937358795509466
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MagmaOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_5
-  displayName: Magma Orb
+  displayName: 
   icon: {fileID: -1516922368, guid: 216a8fbf2b2dd624a91aaa7fc9301b61, type: 3}
   price: 5
   blendIndex: 5

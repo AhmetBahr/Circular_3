@@ -483,12 +483,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImage: {fileID: 6792046722002020350}
   priceText: {fileID: 4921988025152775685}
+  itemNameText: {fileID: 6951852778129993085}
   buyButton: {fileID: 4262529557162997597}
   selectButton: {fileID: 6096394067599546811}
   selectButtonText: {fileID: 2699488730165326285}
   selectButtonBg: {fileID: 9011822396910756264}
   normalBg: {r: 0.85, g: 0.85, b: 0.85, a: 1}
   selectedBg: {r: 0.2, g: 0.7, b: 0.6, a: 1}
+  selectKey: 21
+  selectedKey: 22
   idPrefix: bg
 --- !u!1 &4245937358795509466
 GameObject:

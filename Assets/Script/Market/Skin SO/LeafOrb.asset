@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeafOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_7
-  displayName: Leaf Orb
+  displayName: 
   icon: {fileID: -47514977, guid: 816a92ccfe5fb1d4c8f2263ad89412f7, type: 3}
   price: 5
   blendIndex: 7

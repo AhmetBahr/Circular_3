@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AirOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_2
-  displayName: Air Orb
+  displayNameKey: Skin_2
   icon: {fileID: 412762168, guid: 2de8d7f7d5140c64487e575d35c40c59, type: 3}
   price: 5
   blendIndex: 2

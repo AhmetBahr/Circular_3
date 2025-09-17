@@ -20,12 +20,33 @@ public class SkinItemUI : MonoBehaviour
     [SerializeField] private Button buyButton;        // B_OpenButton
     [SerializeField] private TMP_Text buyPriceText;   // B_OpenButton/Text (TMP)
 
+    [Header("Localization Keys (UI)")]
+    [Tooltip("JSON'daki 'Seç' metninin key'i (ör. 21)")]
+    [SerializeField] private string selectKey = "21";
+    [Tooltip("JSON'daki 'Seçili' metninin key'i (ör. 22)")]
+    [SerializeField] private string selectedKey = "22";
+
     // state & callbacks
     private PlayerSkinSO _data;
     private bool _owned;
     private bool _selected;
     private Func<PlayerSkinSO,bool> _onPurchase;
     private Action<PlayerSkinSO> _onSelect;
+
+    private void OnEnable()
+    {
+        LanguageManager.OnLanguageChanged += HandleLanguageChanged;
+    }
+
+    private void OnDisable()
+    {
+        LanguageManager.OnLanguageChanged -= HandleLanguageChanged;
+    }
+
+    private void HandleLanguageChanged()
+    {
+        Refresh(); // dil değişince tüm metinleri tazele
+    }
 
     public void Setup(PlayerSkinSO data, bool owned, bool selected,
                       Func<PlayerSkinSO,bool> onPurchase,
@@ -34,14 +55,19 @@ public class SkinItemUI : MonoBehaviour
         _data = data; _owned = owned; _selected = selected;
         _onPurchase = onPurchase; _onSelect = onSelect;
 
-        if (itemNameText) itemNameText.text = data.displayName;
         if (iconImage) iconImage.sprite = data.icon;
 
-        buyButton.onClick.RemoveAllListeners();
-        buyButton.onClick.AddListener(OnClickBuy);
+        if (buyButton)
+        {
+            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick.AddListener(OnClickBuy);
+        }
 
-        selectButton.onClick.RemoveAllListeners();
-        selectButton.onClick.AddListener(OnClickSelect);
+        if (selectButton)
+        {
+            selectButton.onClick.RemoveAllListeners();
+            selectButton.onClick.AddListener(OnClickSelect);
+        }
 
         Refresh();
     }
@@ -72,11 +98,35 @@ public class SkinItemUI : MonoBehaviour
 
     void Refresh()
     {
+        // Fiyat ve buton görünürlükleri
         if (buyButton)      buyButton.gameObject.SetActive(!_owned);
         if (buyPriceText)   buyPriceText.text = _data ? _data.price.ToString() : "";
 
         if (selectButton)   selectButton.interactable = _owned;
-        if (selectBtnText)  selectBtnText.text = _selected ? "Seçili" : "Seç";
         if (selectBtnBg)    selectBtnBg.color = _selected ? selectedBg : normalBg;
+
+        // === Localization ===
+        // 1) İsim: SO içindeki displayNameKey'ten
+        if (itemNameText)
+        {
+            string nameText = "";
+            if (_data != null && !string.IsNullOrEmpty(_data.displayNameKey))
+            {
+                nameText = LanguageManager.Instance
+                    ? LanguageManager.Instance.GetLocalizedValue(_data.displayNameKey)
+                    : _data.displayNameKey; // LM yoksa key göster
+            }
+            itemNameText.text = nameText;
+        }
+
+        // 2) Seç / Seçili: UI içindeki key'lerden
+        if (selectBtnText)
+        {
+            var key = _selected ? selectedKey : selectKey;
+            string localized = LanguageManager.Instance
+                ? LanguageManager.Instance.GetLocalizedValue(key)
+                : key; // LM yoksa key göster
+            selectBtnText.text = localized;
+        }
     }
 }

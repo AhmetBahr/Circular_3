@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FireOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_1
-  displayName: FireOrb
+  displayName: 
   icon: {fileID: 1860877198, guid: 0b9d7a7d7053d1e49bcdd6b174eb9905, type: 3}
   price: 5
   blendIndex: 1
