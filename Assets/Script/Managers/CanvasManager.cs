@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Timers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,39 +11,39 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public CanvasGroup MainUpButton;
     [field: SerializeField] public CanvasGroup MainDownButton;
     [field: SerializeField] public CanvasGroup MainCenterText;
-    [field: SerializeField] public TMP_Text [] playerCoinText;
+    [field: SerializeField] public TMP_Text[] playerCoinText;
     [field: SerializeField] public TMP_Text T_HighScoreText;
 
     [SerializeField] private GameObject centralCircular;
     [SerializeField] private Animator centralCircularAnimator;
     [SerializeField] private GameManager gameManager;
     public GameObject DeletePopup;
-    
+
     [Header("GameMenu & PauseMenu Canvas")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameMenuGameObject;
     [SerializeField] private CanvasGroup gameMenuCanvasGroup;
 
-    
     [Header("GameOver Canvas")]
     [field: SerializeField] public CanvasGroup GameOverCanvasGroup;
     [field: SerializeField] public Animator GameOverAnimator;
     [field: SerializeField] public GameObject NewHighScoreText;
     [field: SerializeField] public CircularProgressBar progressBar;
-    
+    [SerializeField] private GameOverManager gameOverManager; // YENİ: referans
+
     [Header("Panels Settings")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject shopePanel;
-    
+
     [Header("Language Settings")]
     public LanguageSelectorUI languageSelector;
     public GameObject languageChangedPopup;
     public TextMeshProUGUI popupText;
-    
+
     private void OnEnable()
     {
         ProgressManager.OnCoinsChanged += UpdateCoinUI;
-        UpdateCoinUI(ProgressManager.GetPlayerCoin()); // ilk değer
+        UpdateCoinUI(ProgressManager.GetPlayerCoin());
         var progress = ProgressManager.LoadProgress();
     }
 
@@ -54,44 +52,55 @@ public class CanvasManager : MonoBehaviour
         ProgressManager.OnCoinsChanged -= UpdateCoinUI;
     }
 
-    
     private void Start()
     {
-        Invoke(nameof(startGameCanvas),1.5f);
+        Invoke(nameof(startGameCanvas), 1.5f);
         NewHighScoreText.SetActive(false);
         playerCoinText[0].text = gameManager.playercoin.ToString();
         playerCoinText[1].text = gameManager.playercoin.ToString();
-        T_HighScoreText.text = gameManager.highScore.ToString(); 
+        T_HighScoreText.text = gameManager.highScore.ToString();
         gameMenuGameObject.SetActive(false);
 
         int currentCoin = ProgressManager.GetPlayerCoin();
         UpdateCoinUI(currentCoin);
+
+        // GameOver paneli başta kapalı ve tıklanamaz olsun
+        SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false);
     }
 
     private void startGameCanvas()
     {
-        StartCoroutine(FadeInCanvas(MainUpButton, 1f)); 
-        StartCoroutine(FadeInCanvas(MainDownButton, 1f)); 
-        StartCoroutine(FadeInCanvas(MainCenterText, 1f)); 
-        
+        StartCoroutine(FadeInCanvas(MainUpButton, 1f));
+        StartCoroutine(FadeInCanvas(MainDownButton, 1f));
+        StartCoroutine(FadeInCanvas(MainCenterText, 1f));
     }
 
     public void GameStartPanelOff()
     {
-        StartCoroutine(FadeOutCanvas(MainUpButton, 1f)); 
-        StartCoroutine(FadeOutCanvas(MainDownButton, 1f)); 
+        StartCoroutine(FadeOutCanvas(MainUpButton, 1f));
+        StartCoroutine(FadeOutCanvas(MainDownButton, 1f));
         StartCoroutine(FadeOutCanvas(MainCenterText, 1f));
-        
+
         gameMenuGameObject.SetActive(true);
         StartCoroutine(FadeInCanvas(gameMenuCanvasGroup, 1f));
     }
 
+    // === GAME OVER AÇILIŞ ===
     public void GameOverPanelOn()
     {
         NewHighScoreText.SetActive(gameManager.MainScore > gameManager.highScore);
-        progressBar.isActive = true;
+        progressBar?.RestartCooldown();               // circular baştan
+
+        gameOverManager?.Show(0.5f);                  // anim + fade
     }
-    
+
+    public void ResetGameOverUI()
+    {
+        gameOverManager?.ResetImmediate();            // anim Idle + panel kapalı
+        NewHighScoreText?.SetActive(false);
+        progressBar?.ResetImmediate();                // circular tam sıfır
+    }
+
     private IEnumerator FadeOutCanvas(CanvasGroup canvasGroup, float duration)
     {
         float startAlpha = canvasGroup.alpha;
@@ -114,10 +123,7 @@ public class CanvasManager : MonoBehaviour
         float startAlpha = canvasGroup.alpha;
         float time = 0f;
 
-        // Etkileşimleri aç
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
-
+        // Etkileşimleri, fade sonunda açmak istersen bunları başa değil, sona taşıyabilirsin.
         while (time < duration)
         {
             time += Time.deltaTime;
@@ -126,16 +132,13 @@ public class CanvasManager : MonoBehaviour
         }
 
         canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
         yield return new WaitForSeconds(.5f);
-   
     }
 
-    public void OnClickSettingsPanel()
-    {
-        settingsPanel.SetActive(true);
-        
-    }
-
+    public void OnClickSettingsPanel() => settingsPanel.SetActive(true);
 
     public void OnclickCloseSettingPanel()
     {
@@ -143,63 +146,53 @@ public class CanvasManager : MonoBehaviour
         ProgressManager.SetLanguage(languageSelector.GetSelectedLanguageCode());
 
         if (languageSelector.LanguageChanged())
-        {
             StartCoroutine(ApplyLanguageChange(languageSelector.GetSelectedLanguageCode()));
-        }
         else
-        {
             settingsPanel.SetActive(false);
-        }
     }
-    
+
     private IEnumerator ApplyLanguageChange(string newLang)
     {
         if (languageChangedPopup != null && popupText != null)
-        {
-            // popupText.text = "Dil değiştiriliyor...";
             languageChangedPopup.SetActive(true);
-        }
 
         yield return StartCoroutine(LanguageManager.Instance.LoadLanguage(newLang));
-        yield return new WaitForSeconds(1.8f); 
-        
-
-        
+        yield return new WaitForSeconds(1.8f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnClickShopePanel()
     {
         shopePanel.SetActive(true);
-
-        // Main UI’ı anında kapat
-        SetCanvasGroupInstant(MainUpButton, 0f, false);
-        SetCanvasGroupInstant(MainDownButton, 0f, false);
-        SetCanvasGroupInstant(MainCenterText, 0f, false);
+        SetCanvasGroupInstant(MainUpButton, 1f, true);
+        SetCanvasGroupInstant(MainDownButton, 1f, true);
+        SetCanvasGroupInstant(MainCenterText, 1f, true);
     }
 
     public void OnclickCloseShopePanel()
     {
         shopePanel.SetActive(false);
-
-        // Main UI’ı anında aç
         SetCanvasGroupInstant(MainUpButton, 1f, true);
         SetCanvasGroupInstant(MainDownButton, 1f, true);
         SetCanvasGroupInstant(MainCenterText, 1f, true);
     }
-    
-    private void SetCanvasGroupInstant(CanvasGroup canvasGroup, float alpha, bool interactable)
+
+    public void OnClickCloseDeathPanel()
+    {
+        SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false); 
+    }
+
+    public void SetCanvasGroupInstant(CanvasGroup canvasGroup, float alpha, bool interactable)
     {
         canvasGroup.alpha = alpha;
         canvasGroup.interactable = interactable;
         canvasGroup.blocksRaycasts = interactable;
     }
-    
+
     public void OnClickRestartGame()
     {
-        Invoke(nameof(resartScene), 0.5f);   
+        Invoke(nameof(resartScene), 0.5f);
         Time.timeScale = 1;
-        //centralCircularAnimator.SetTrigger("endgame");
     }
 
     public void PauseMenuOpen()
@@ -211,7 +204,7 @@ public class CanvasManager : MonoBehaviour
 
     public void PauseMenuClose()
     {
-        Time.timeScale = 1; //Daha sonra pause kapanınca geri sayım yapıcaz
+        Time.timeScale = 1;
         pauseMenu.SetActive(false);
         gameMenuGameObject.SetActive(true);
     }
@@ -220,30 +213,20 @@ public class CanvasManager : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
-    
-    public void OpenPopUp()
-    {
-        DeletePopup.SetActive(true);
-        
-    }
 
-    public void ClosePopUp()
-    {
-        DeletePopup.SetActive(false);
-        
-    }
-    
+    public void OpenPopUp()  => DeletePopup.SetActive(true);
+    public void ClosePopUp() => DeletePopup.SetActive(false);
+
     public void DeleteHighScore()
     {
         ProgressManager.ResetProgress();
         SceneManager.LoadScene("GameScene");
-        
-    }
-    
-    public void UpdateCoinUI(int currentCoin)
-    {
-        playerCoinText[0].text  = currentCoin.ToString();
-        playerCoinText[1].text  = currentCoin.ToString();
     }
 
+    public void UpdateCoinUI(int currentCoin)
+    {
+        playerCoinText[0].text = currentCoin.ToString();
+        playerCoinText[1].text = currentCoin.ToString();
+    }
+    
 }

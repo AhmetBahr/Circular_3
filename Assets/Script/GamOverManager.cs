@@ -1,46 +1,81 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamOverManager : MonoBehaviour
+public class GameOverManager : MonoBehaviour
 {
-    [Header("Text Elements and Buttons")]
-    public Button restartButton;
-    public Button AdmobButton;
-    //[SerializeField] private string key;
-    
-    [Header("Object References")]
     public CanvasGroup deathCanvasGroup;
-    [SerializeField] private CanvasManager canvasManager;    
-    
-    [Header("Controller References")]
-    public bool fadeIn = false;
-    
-    // public void setUp(int score, int hScore)
-    // { 
-    //     currentScoreText.text = score.ToString() +" "+ LanguageManager.Instance.GetLocalizedValue(key);
-    // }
-    
-    private void Update()
+    public Button restartButton, AdmobButton;
+    [SerializeField] private Animator panelAnimator;
+
+    public void Show(float fadeDuration = 0.5f)
     {
-        if (fadeIn)
+        // CanvasGroup başlangıç
+        deathCanvasGroup.alpha = 0f;
+        deathCanvasGroup.interactable = false;
+        deathCanvasGroup.blocksRaycasts = false;
+        if (restartButton) restartButton.interactable = false;
+        if (AdmobButton)   AdmobButton.interactable   = false;
+
+        // Animator güvenli başlat
+        if (panelAnimator)
         {
-            if (deathCanvasGroup.alpha < 1)
-            {
-                deathCanvasGroup.alpha += (Time.deltaTime/2);
-                if (deathCanvasGroup.alpha >= 1)
-                {
-                    fadeIn = false;
-                    canvasManager.GameOverAnimator.SetTrigger("gameover");
-                    deathCanvasGroup.blocksRaycasts = true;
-                    
-                }
-                
-                restartButton.interactable = true;
-                AdmobButton.interactable = true;
-            }
+            panelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            panelAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
+            panelAnimator.ResetTrigger("admob");
+            panelAnimator.Rebind();          // tüm param/state’i temizler
+            panelAnimator.Update(0f);
+
+            panelAnimator.SetTrigger("gameover"); // Any State -> DeathPanelAnimator
+            panelAnimator.Update(0f);             // anında uygula
         }
+
+        StartCoroutine(FadeInUnscaled(fadeDuration));
+    }
+
+    public void BackToIdle()
+    {
+        if (panelAnimator)
+        {
+            panelAnimator.ResetTrigger("gameover");
+            panelAnimator.SetTrigger("admob"); // DeathPanelAnimator -> Idle
+            panelAnimator.Update(0f);
+        }
+    }
+
+    public void ResetImmediate()
+    {
+        if (panelAnimator)
+        {
+            panelAnimator.Rebind();
+            panelAnimator.Update(0f);
+            panelAnimator.Play("Idle", 0, 0f);
+            panelAnimator.Update(0f);
+        }
+
+        deathCanvasGroup.alpha = 0f;
+        deathCanvasGroup.interactable = false;
+        deathCanvasGroup.blocksRaycasts = false;
+
+        if (restartButton) restartButton.interactable = false;
+        if (AdmobButton)   AdmobButton.interactable   = false;
+    }
+
+    private IEnumerator FadeInUnscaled(float dur)
+    {
+        float t = 0f;
+        while (t < dur)
+        {
+            t += Time.unscaledDeltaTime;
+            deathCanvasGroup.alpha = Mathf.Lerp(0f, 1f, t / dur);
+            yield return null;
+        }
+        deathCanvasGroup.alpha = 1f;
+        deathCanvasGroup.blocksRaycasts = true;
+        deathCanvasGroup.interactable = true;
+
+        if (restartButton) restartButton.interactable = true;
+        if (AdmobButton)   AdmobButton.interactable   = true;
     }
 }

@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,15 +8,15 @@ public class CircularProgressBar : MonoBehaviour
     public bool isActive = false;
     public TMP_Text TimerText;
     public Image fill;
-    public float maxTime;
+    public float maxTime = 3f;
     public GameObject cicrularProgressBar;
     public GameObject NormalRestartButton;
-    
-    public float time;
+
+    private float time;
 
     private void Start()
     {
-        time = maxTime;
+        ResetImmediate();
     }
 
     private void Update()
@@ -28,21 +25,43 @@ public class CircularProgressBar : MonoBehaviour
         {
             NormalRestartButton.SetActive(false);
             cicrularProgressBar.SetActive(true);
-            time -= Time.deltaTime;
-            TimerText.text = ""+ (int)time;
+
+            time -= Time.unscaledDeltaTime; // unscaled: pause’den etkilenmez
+            TimerText.text = ((int)Mathf.Ceil(time)).ToString();
             fill.fillAmount = time / maxTime;
 
-            if (time <= 0)
+            if (time <= 0f)
             {
                 isActive = false;
+                ShowNormalButton();
             }
-            
         }
+    }
 
-        if (!isActive)
-        {
-            cicrularProgressBar.SetActive(false);
-            NormalRestartButton.SetActive(true);
-        }
+    private void ShowNormalButton()
+    {
+        cicrularProgressBar.SetActive(false);
+        NormalRestartButton.SetActive(true);
+    }
+
+    // === YENİ: revive/gameover için çağıracağınlar ===
+    public void RestartCooldown()
+    {
+        time = maxTime;
+        isActive = true;
+        NormalRestartButton.SetActive(false);
+        cicrularProgressBar.SetActive(true);
+    }
+
+    public void ResetImmediate()
+    {
+        time = maxTime;
+        isActive = false;
+        fill.fillAmount = 1f;
+
+        // UI default hali
+        cicrularProgressBar.SetActive(false);
+        NormalRestartButton.SetActive(true);
+        if (TimerText) TimerText.text = maxTime.ToString("0");
     }
 }

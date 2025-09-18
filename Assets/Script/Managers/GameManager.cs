@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get ; private set;}
     
-    [field: SerializeField] private GamOverManager gameOverScript;
+    [field: SerializeField] private GameOverManager gameOverScript;
     [Header("Core Variables")] 
     [field: SerializeField] public int MainScore = 0;
     [field: SerializeField] public bool isGameStarted = false;
