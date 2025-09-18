@@ -145,14 +145,14 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        // Rigidbody2D varsa fiziksel rotasyon tercih edilir
-        if (rb2 != null)
-        {
-            rb2.MoveRotation(rb2.rotation + _currentRotSpeed * Time.fixedDeltaTime);
-        }
-    }
+    // void FixedUpdate()
+    // {
+    //     // Rigidbody2D varsa fiziksel rotasyon tercih edilir
+    //     if (rb2 != null)
+    //     {
+    //         rb2.MoveRotation(rb2.rotation + _currentRotSpeed * Time.fixedDeltaTime);
+    //     }
+    // }
 
     void ScheduleNextTurn()
     {

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -39,6 +40,10 @@ public class CanvasManager : MonoBehaviour
     public LanguageSelectorUI languageSelector;
     public GameObject languageChangedPopup;
     public TextMeshProUGUI popupText;
+    
+    [Header("Admob Manager")]
+    [SerializeField] private PlayerController player;          // Inspector’dan bağla
+    [SerializeField] private Button AdmobButton;               // Zaten var
 
     private void OnEnable()
     {
@@ -150,6 +155,24 @@ public class CanvasManager : MonoBehaviour
         else
             settingsPanel.SetActive(false);
     }
+    
+    public void OnClick_AdRevive()
+    {
+        if (AdmobButton) AdmobButton.interactable = false;
+
+        AdManager.Instance.ShowRewarded(
+            onReward: () =>
+            {
+                player.RespawnDefault();
+                progressBar?.ResetImmediate();
+            },
+            onUnavailable: () =>
+            {
+                if (AdmobButton) AdmobButton.interactable = true;
+            }
+        );
+    }
+
 
     private IEnumerator ApplyLanguageChange(string newLang)
     {

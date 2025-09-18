@@ -249,6 +249,13 @@ public class PlayerController : MonoBehaviour
         staminaUI?.UpdateUI(currentStamina);
         StartCoroutine(RespawnProtection());
     }
+    
+    public void RespawnDefault()
+    {
+        // kendi mantığına göre bir default spawn noktası seç
+        Vector3 spawnPos = centerPoint.position + new Vector3(radius, 0f, 0f);
+        Respawn(spawnPos);
+    }
 
     public void OnClickRespawn()
     {

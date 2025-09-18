@@ -193,6 +193,8 @@ MonoBehaviour:
   languageSelector: {fileID: 460977951}
   languageChangedPopup: {fileID: 3080516000164904848}
   popupText: {fileID: 451809870816416671}
+  player: {fileID: 1096279848}
+  AdmobButton: {fileID: 354210440}
 --- !u!114 &1430968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1933,7 +1935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &279621335
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2655,9 +2657,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1096279848}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnClickRespawn
+      - m_Target: {fileID: 1430967}
+        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
+        m_MethodName: OnClick_AdRevive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6712,6 +6714,8 @@ MonoBehaviour:
   canvasManager: {fileID: 1430967}
   gameManager: {fileID: 936456716}
   gameOverScript: {fileID: 1334480105}
+  enemySpawner: {fileID: 0}
+  coinSpawner: {fileID: 0}
   centerPoint: {fileID: 342260029}
   acceleration: 2
   radius: 0.65
@@ -7362,7 +7366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f51d23c67e46e45a3df3bb59f30cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   spawnPoints:
   - pointTransform: {fileID: 1942205648}
     direction: 0
@@ -9068,6 +9071,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7468fc9b70f4ba04fadc44ca78b6ec05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardedAdUnitId: ca-app-pub-3433338749600523/5375397711
+  preloadCount: 5
 --- !u!4 &1441377395
 Transform:
   m_ObjectHideFlags: 0
@@ -9964,7 +9969,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6646501a900bd6045ac432e843a8c1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   spawnPoints:
   - pointTransform: {fileID: 1637663381}
     direction: 2
