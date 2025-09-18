@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private GameOverManager gameOverScript;
-
+    [SerializeField] private EnemySpawner enemySpawner;
+    [SerializeField] private CoinSpawner  coinSpawner;
+    
     [Header("Core Settings")]
     [SerializeField] private Transform centerPoint;
     [SerializeField] private float acceleration = 2f;
@@ -65,6 +67,9 @@ public class PlayerController : MonoBehaviour
             // derleyici eski versiyondaysa bu satır yok sayılır ama sorun değil
             animator.keepAnimatorStateOnDisable = true;
         }
+        
+        if (enemySpawner == null) enemySpawner = FindObjectOfType<EnemySpawner>();
+        if (coinSpawner  == null) coinSpawner  = FindObjectOfType<CoinSpawner>();
     }
 
     private void OnEnable()
@@ -198,6 +203,9 @@ public class PlayerController : MonoBehaviour
             gameManager.isGameStarted = true;
             canvasManager.GameStartPanelOff();
         }
+        
+        enemySpawner?.StartSpawning();
+        coinSpawner?.StartSpawning();
     }
 
     public void PlayerDeath()
@@ -214,6 +222,9 @@ public class PlayerController : MonoBehaviour
         if (animator != null)
             savedBlendParam = animator.GetFloat(blendParamHash);
 
+        enemySpawner?.StopSpawning(true);
+        coinSpawner?.StopSpawning(true);
+        
         // Player'ı kapat
         gameObject.SetActive(false);
     }
@@ -231,6 +242,9 @@ public class PlayerController : MonoBehaviour
         currentSpeed = baseSpeed;
         isBoosting = false;
         canBoost = true;
+        
+        enemySpawner?.StartSpawning();
+        coinSpawner?.StartSpawning();
 
         staminaUI?.UpdateUI(currentStamina);
         StartCoroutine(RespawnProtection());

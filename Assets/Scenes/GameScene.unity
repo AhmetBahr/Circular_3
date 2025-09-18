@@ -187,6 +187,7 @@ MonoBehaviour:
   GameOverAnimator: {fileID: 161830349}
   NewHighScoreText: {fileID: 468741375}
   progressBar: {fileID: 1430968}
+  gameOverManager: {fileID: 1334480105}
   settingsPanel: {fileID: 6701050551811234238}
   shopePanel: {fileID: 279621334}
   languageSelector: {fileID: 460977951}
@@ -207,10 +208,9 @@ MonoBehaviour:
   isActive: 0
   TimerText: {fileID: 1178397544}
   fill: {fileID: 1239259124}
-  maxTime: 6
+  maxTime: 3
   cicrularProgressBar: {fileID: 663085550}
   NormalRestartButton: {fileID: 13178825}
-  time: 0
 --- !u!114 &1430969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4432,19 +4432,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 663085553}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1430967}
-        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
-        m_MethodName: OnClickRestartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &663085553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6741,6 +6729,8 @@ MonoBehaviour:
   staminaBackground: {fileID: 1411184997}
   staminaUI: {fileID: 1430969}
   spinSpeedDegPerSec: 0
+  animator: {fileID: 0}
+  blendParameterName: Blend
 --- !u!58 &1096279849
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8349,11 +8339,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766191e0425907a41aa7ed84a1a49eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathCanvasGroup: {fileID: 814852225}
   restartButton: {fileID: 13178827}
   AdmobButton: {fileID: 354210440}
-  deathCanvasGroup: {fileID: 814852225}
-  canvasManager: {fileID: 1430967}
-  fadeIn: 0
+  panelAnimator: {fileID: 161830349}
 --- !u!1 &1346451091
 GameObject:
   m_ObjectHideFlags: 0

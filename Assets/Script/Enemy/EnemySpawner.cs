@@ -1,12 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class SpawnPoint
     {
         public Transform pointTransform;
@@ -15,55 +14,63 @@ public class EnemySpawner : MonoBehaviour
         public Vector2 yRange;
     }
 
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private SpawnPoint[] spawnPoints;
     [SerializeField] private float spawnInterval = 3f;
 
-    private float spawnTimer;
+    private Coroutine loop;
+    private bool isRunning;
 
-    private void Awake()
+    // Dışarıdan kontrol edilecek API
+    public void StartSpawning()
     {
-        var gameManagerObject = GameObject.Find("GameManager");
-        gameManager = gameManagerObject.GetComponent<GameManager>();
-
+        if (isRunning) return;
+        isRunning = true;
+        loop = StartCoroutine(SpawnLoop());
     }
 
-    void Update()
+    public void StopSpawning(bool reset = true)
     {
-        if (gameManager.isGameStarted)
+        isRunning = false;
+        if (loop != null)
         {
-            StartSpawingEnemys();
+            StopCoroutine(loop);
+            loop = null;
+        }
+        // reset=true ise bir sonraki Start'ta beklemeden başlamak için ekstra bir şey yapmaya gerek yok
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        while (isRunning)
+        {
+            // Spawn
+            if (EnemyPool.Instance.CanSpawn() && spawnPoints != null && spawnPoints.Length > 0)
+            {
+                int index = Random.Range(0, spawnPoints.Length);
+                var sp = spawnPoints[index];
+
+                Vector3 spawnPos = new Vector3(
+                    Random.Range(sp.xRange.x, sp.xRange.y),
+                    Random.Range(sp.yRange.x, sp.yRange.y),
+                    0f
+                ) + sp.pointTransform.position;
+
+                GameObject enemy = EnemyPool.Instance.GetEnemy();
+                enemy.transform.position = spawnPos;
+                enemy.transform.rotation = Quaternion.identity;
+
+                var controller = enemy.GetComponent<EnemyController>();
+                controller.enemyDirection = sp.direction;
+
+                enemy.SetActive(true);
+            }
+
+            // spawnInterval değişirse etkilesin diye her seferinde yeni WaitForSeconds
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    public void StartSpawingEnemys()
-    {
-        spawnTimer += Time.deltaTime;
-
-        if (spawnTimer >= spawnInterval && EnemyPool.Instance.CanSpawn())
-        {
-            spawnTimer = 0f;
-
-            int index = Random.Range(0, spawnPoints.Length);
-            var sp = spawnPoints[index];
-
-            Vector3 spawnPos = new Vector3(
-                Random.Range(sp.xRange.x, sp.xRange.y),
-                Random.Range(sp.yRange.x, sp.yRange.y),
-                0f
-            ) + sp.pointTransform.position;
-
-            GameObject enemy = EnemyPool.Instance.GetEnemy();
-            enemy.transform.position = spawnPos;
-            enemy.transform.rotation = Quaternion.identity;
-
-            var controller = enemy.GetComponent<EnemyController>();
-            controller.enemyDirection = sp.direction;
-
-            enemy.SetActive(true);
-        }
-    }
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (spawnPoints == null) return;
@@ -87,4 +94,5 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+#endif
 }
