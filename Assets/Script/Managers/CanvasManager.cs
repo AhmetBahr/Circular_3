@@ -30,20 +30,19 @@ public class CanvasManager : MonoBehaviour
     [field: SerializeField] public Animator GameOverAnimator;
     [field: SerializeField] public GameObject NewHighScoreText;
     [field: SerializeField] public CircularProgressBar progressBar;
-    [SerializeField] private GameOverManager gameOverManager; // YENİ: referans
+    [SerializeField] private GameOverManager gameOverManager;
 
     [Header("Panels Settings")]
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject shopePanel;
 
     [Header("Language Settings")]
     public LanguageSelectorUI languageSelector;
     public GameObject languageChangedPopup;
     public TextMeshProUGUI popupText;
-    
+
     [Header("Admob Manager")]
-    [SerializeField] private PlayerController player;          // Inspector’dan bağla
-    [SerializeField] private Button AdmobButton;               // Zaten var
+    [SerializeField] private PlayerController player;
+    [SerializeField] private Button AdmobButton;
 
     private void OnEnable()
     {
@@ -94,16 +93,15 @@ public class CanvasManager : MonoBehaviour
     public void GameOverPanelOn()
     {
         NewHighScoreText.SetActive(gameManager.MainScore > gameManager.highScore);
-        progressBar?.RestartCooldown();               // circular baştan
-
-        gameOverManager?.Show(0.5f);                  // anim + fade
+        progressBar?.RestartCooldown();
+        gameOverManager?.Show(0.5f);
     }
 
     public void ResetGameOverUI()
     {
-        gameOverManager?.ResetImmediate();            // anim Idle + panel kapalı
+        gameOverManager?.ResetImmediate();
         NewHighScoreText?.SetActive(false);
-        progressBar?.ResetImmediate();                // circular tam sıfır
+        progressBar?.ResetImmediate();
     }
 
     private IEnumerator FadeOutCanvas(CanvasGroup canvasGroup, float duration)
@@ -122,13 +120,12 @@ public class CanvasManager : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
     }
-    
+
     private IEnumerator FadeInCanvas(CanvasGroup canvasGroup, float duration)
     {
         float startAlpha = canvasGroup.alpha;
         float time = 0f;
 
-        // Etkileşimleri, fade sonunda açmak istersen bunları başa değil, sona taşıyabilirsin.
         while (time < duration)
         {
             time += Time.deltaTime;
@@ -155,7 +152,7 @@ public class CanvasManager : MonoBehaviour
         else
             settingsPanel.SetActive(false);
     }
-    
+
     public void OnClick_AdRevive()
     {
         if (AdmobButton) AdmobButton.interactable = false;
@@ -173,7 +170,6 @@ public class CanvasManager : MonoBehaviour
         );
     }
 
-
     private IEnumerator ApplyLanguageChange(string newLang)
     {
         if (languageChangedPopup != null && popupText != null)
@@ -184,25 +180,9 @@ public class CanvasManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void OnClickShopePanel()
-    {
-        shopePanel.SetActive(true);
-        SetCanvasGroupInstant(MainUpButton, 1f, true);
-        SetCanvasGroupInstant(MainDownButton, 1f, true);
-        SetCanvasGroupInstant(MainCenterText, 1f, true);
-    }
-
-    public void OnclickCloseShopePanel()
-    {
-        shopePanel.SetActive(false);
-        SetCanvasGroupInstant(MainUpButton, 1f, true);
-        SetCanvasGroupInstant(MainDownButton, 1f, true);
-        SetCanvasGroupInstant(MainCenterText, 1f, true);
-    }
-
     public void OnClickCloseDeathPanel()
     {
-        SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false); 
+        SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false);
     }
 
     public void SetCanvasGroupInstant(CanvasGroup canvasGroup, float alpha, bool interactable)
@@ -251,5 +231,4 @@ public class CanvasManager : MonoBehaviour
         playerCoinText[0].text = currentCoin.ToString();
         playerCoinText[1].text = currentCoin.ToString();
     }
-    
 }

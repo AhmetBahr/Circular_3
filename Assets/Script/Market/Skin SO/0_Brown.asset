@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: Purple_Shey
+  m_Name: 0_Brown
   m_EditorClassIdentifier: 
-  skinId: Skin_11
-  displayName: Purple Love
-  icon: {fileID: 2053025863, guid: df6d3ffef8ff6b94db8f87764dd52e4b, type: 3}
+  skinId: Skinn_02
+  displayNameKey: Skin_0
+  icon: {fileID: -1146728563, guid: ca53cf2c18426f64bab026ddef9e8891, type: 3}
   price: 0
-  blendIndex: 11
+  blendIndex: 0
+  overridePlayerColor: 1
+  playerColor: {r: 0.5686275, g: 0.3803922, b: 0.18039216, a: 1}
+  playerColorHex: 

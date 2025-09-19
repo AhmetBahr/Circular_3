@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: StoneOrb
+  m_Name: 0_Red
   m_EditorClassIdentifier: 
-  skinId: Skinn_0
-  displayName: Stone Orb
-  icon: {fileID: 2034271048, guid: 25da4e5705546294b9309540c8b7b018, type: 3}
+  skinId: Skinn_07
+  displayNameKey: Skin_0
+  icon: {fileID: -798865329, guid: ab71ae4414653744480a4019c7a21949, type: 3}
   price: 0
   blendIndex: 0
+  overridePlayerColor: 1
+  playerColor: {r: 0.39607847, g: 0.21960786, b: 0.25882354, a: 1}
+  playerColorHex: 

@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: FireOrb
+  m_Name: 4_AirOrb
   m_EditorClassIdentifier: 
-  skinId: Skinn_1
-  displayName: 
-  icon: {fileID: 1860877198, guid: 0b9d7a7d7053d1e49bcdd6b174eb9905, type: 3}
+  skinId: Skinn_4
+  displayNameKey: Skin_4
+  icon: {fileID: 412762168, guid: 2de8d7f7d5140c64487e575d35c40c59, type: 3}
   price: 5
-  blendIndex: 1
+  blendIndex: 4
+  overridePlayerColor: 1
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
+  playerColorHex: 

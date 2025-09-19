@@ -25,7 +25,20 @@
     { "key": "23", "value": "Market" },
     { "key": "24", "value": "Tekrar Başlat" },
     { "key": "25", "value": "Devam et" },
-    { "key": "Item_1", "value": "Beyaz" },
-    { "key": "Skin_2", "value": "Hava" }
+    
+    { "key": "Skin_0", "value": "Normal" },
+    { "key": "Skin_1", "value": "Ateş" },
+    { "key": "Skin_2", "value": "Su" },
+    { "key": "Skin_3", "value": "Taş" },
+    { "key": "Skin_4", "value": "Hava" },
+    { "key": "Skin_5", "value": "Bitki" },
+    { "key": "Skin_6", "value": "Magma" },
+    { "key": "Skin_7", "value": "Odun" },
+    { "key": "Skin_8", "value": "Ağaç" },
+    { "key": "Skin_9", "value": "Altın" },
+    { "key": "Skin_10", "value": "Karanlık" },
+    { "key": "Skin_11", "value": "Pembe" },
+    { "key": "Skin_12", "value": "Love" },
+    { "key": "Skin_13", "value": "Dünya" }
   ]
 }

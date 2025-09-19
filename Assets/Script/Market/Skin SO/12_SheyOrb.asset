@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: GoldenOrb
+  m_Name: 12_SheyOrb
   m_EditorClassIdentifier: 
-  skinId: Skinn_6
-  displayName: 
-  icon: {fileID: 959479439, guid: 339a6d22fa651844e8ead1df12ea452b, type: 3}
-  price: 10
-  blendIndex: 6
+  skinId: Skinn_12
+  displayNameKey: Skin_12
+  icon: {fileID: 21300000, guid: f59c5435f159f75479749bd1c7782402, type: 3}
+  price: 15
+  blendIndex: 10
+  overridePlayerColor: 1
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
+  playerColorHex: 

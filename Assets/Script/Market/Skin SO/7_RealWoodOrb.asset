@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: LeafOrb
+  m_Name: 7_RealWoodOrb
   m_EditorClassIdentifier: 
   skinId: Skinn_7
-  displayName: 
-  icon: {fileID: -47514977, guid: 816a92ccfe5fb1d4c8f2263ad89412f7, type: 3}
+  displayNameKey: Skin_7
+  icon: {fileID: -657544640, guid: f1878c77c0b92d345b19ad74ca20fccc, type: 3}
   price: 5
   blendIndex: 7
+  overridePlayerColor: 1
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
+  playerColorHex: 

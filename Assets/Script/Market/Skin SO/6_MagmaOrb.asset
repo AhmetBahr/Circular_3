@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: RealWoodOrb
+  m_Name: 6_MagmaOrb
   m_EditorClassIdentifier: 
-  skinId: Skinn_8
-  displayName: Wooden Orb
-  icon: {fileID: -657544640, guid: f1878c77c0b92d345b19ad74ca20fccc, type: 3}
+  skinId: Skinn_6
+  displayNameKey: Skin_6
+  icon: {fileID: -1516922368, guid: 216a8fbf2b2dd624a91aaa7fc9301b61, type: 3}
   price: 5
-  blendIndex: 8
+  blendIndex: 6
+  overridePlayerColor: 1
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
+  playerColorHex: 

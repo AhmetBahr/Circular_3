@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: MagmaOrb
+  m_Name: 8_WoodOrb
   m_EditorClassIdentifier: 
-  skinId: Skinn_5
-  displayName: 
-  icon: {fileID: -1516922368, guid: 216a8fbf2b2dd624a91aaa7fc9301b61, type: 3}
+  skinId: Skinn_8
+  displayNameKey: Skin_8
+  icon: {fileID: 1360810479, guid: 1f3ba4a7273664b43948de3e89c87fe2, type: 3}
   price: 5
-  blendIndex: 5
+  blendIndex: 8
+  overridePlayerColor: 1
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
+  playerColorHex: 

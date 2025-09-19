@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50801c8409abd80419d411be0f02901f, type: 3}
-  m_Name: World
+  m_Name: 0_Gri
   m_EditorClassIdentifier: 
-  skinId: Skinn_12
-  displayName: World
-  icon: {fileID: -1806718144, guid: 628c2e47d3ae9a54596d8686366c2496, type: 3}
-  price: 10
-  blendIndex: 12
+  skinId: Skinn_04
+  displayNameKey: Skin_0
+  icon: {fileID: 601878576, guid: b9ff4c97e3cf024488c2513c289d87d6, type: 3}
+  price: 0
+  blendIndex: 0
+  overridePlayerColor: 1
+  playerColor: {r: 0.6117647, g: 0.61960787, b: 0.62352943, a: 1}
+  playerColorHex: 
