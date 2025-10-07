@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance{get ; private set;}
+    public static GameManager Instance { get; private set; }
     
     [field: SerializeField] private GameOverManager gameOverScript;
+    
     [Header("Core Variables")] 
     [field: SerializeField] public int MainScore = 0;
     [field: SerializeField] public bool isGameStarted = false;
@@ -24,7 +25,15 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
+        // Sağlam singleton guard
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        // Sahneler arası kalması gerekmiyorsa DontDestroyOnLoad koymuyoruz.
+        // DontDestroyOnLoad(gameObject);
     }
     
     private void OnEnable()
@@ -35,11 +44,13 @@ public class GameManager : MonoBehaviour
         playercoin = progress.playercoin;
         isSoundOpen = progress.isSoundOpen;
     }
+
     private void Start()
     {
-        MainScore = 0;   
-        mainScoreText.text = MainScore.ToString();
-        playercoin = 0;
+        MainScore = 0;
+        if (mainScoreText) mainScoreText.text = MainScore.ToString();
+        playercoin = 0; // Bu run içinde toplanan coin
+        isGameStarted = false;
     }
     
     public void OnGameEnd()
@@ -50,15 +61,10 @@ public class GameManager : MonoBehaviour
             ProgressManager.SetHighScore(highScore);
         }
 
-  
-        int coinBeforeGame = ProgressManager.GetPlayerCoin();   // Satın alma sonrası coin
-        int coinGainedDuringGame = playercoin;                  // Oyun içi toplanan para
-
+        // Kalıcı coin güncelle
+        int coinBeforeGame = ProgressManager.GetPlayerCoin();
+        int coinGainedDuringGame = playercoin;
         int newTotal = coinBeforeGame + coinGainedDuringGame;
-        ProgressManager.SetPlayerCoin(newTotal);                // Kalıcı olarak yaz
-
-        //Debug.Log($"Game End: Önceki coin: {coinBeforeGame}, Kazanılan: {coinGainedDuringGame}, Toplam: {newTotal}");
+        ProgressManager.SetPlayerCoin(newTotal);
     }
-
-
 }

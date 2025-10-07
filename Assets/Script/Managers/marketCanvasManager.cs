@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 public class MarketCanvasManager : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class MarketCanvasManager : MonoBehaviour
     {
         public RectTransform rect;  
         public RawImage icon;        
-      
     }
 
     [Header("Alt Bar Butonları (markets ile aynı sıra)")]
@@ -30,17 +30,40 @@ public class MarketCanvasManager : MonoBehaviour
     [SerializeField] private Color defaultIconColor = new Color(0, 0, 0, 1);
     [SerializeField] private Color selectedIconColor = new Color(1, 1, 1, 1);
 
-    private int currentIndex = -1;
+    [Header("Buton ve Raycast Kilidi")]
+    [SerializeField] private Button shopeOpenButton;              // paneli açan buton
+    [SerializeField] private GameObject shopeOpenButtonRoot;      // butonun root objesi (opsiyonel, SetActive için)
+    [SerializeField] private Graphic[] extraRaycastTargetsToDisable; // Image/Text gibi raycast alanları (opsiyonel)
 
-    // === Panel Aç/Kapat ===
+    private int currentIndex = -1;
+    private bool _isLocked; // iç durum
+
+    private void Start()
+    {
+        // Başlangıçta oyun başladıysa kilitle
+        bool shouldLock = GameManager.Instance && GameManager.Instance.isGameStarted;
+        SetShopOpenLock(shouldLock);
+    }
+
+    /// <summary>
+    /// DIKKAT: Bu fonksiyon inspector’dan butona bağlı. Oyun başladıysa en başta geri dön.
+    /// </summary>
     public void OnClickShopePanel()
     {
+        // 1) KOD KORUMASI — oyun başladıysa asla açma
+        if (GameManager.Instance && GameManager.Instance.isGameStarted)
+            return;
+
+        // 2) Ek güvenlik — button kilitliyse de açma
+        if (_isLocked || (shopeOpenButton && !shopeOpenButton.interactable))
+            return;
+
         if (shopePanel != null) shopePanel.SetActive(true);
         SetCanvasGroupInstant(MainUpButton,   0f, true);
         SetCanvasGroupInstant(MainDownButton, 0f, true);
         SetCanvasGroupInstant(MainCenterText, 0f, true);
 
-        OpenMarket(defaultMarketIndex); // her açılışta Market_1
+        OpenMarket(defaultMarketIndex); // her açılışta varsayılan market
     }
 
     public void OnclickCloseShopePanel()
@@ -49,6 +72,33 @@ public class MarketCanvasManager : MonoBehaviour
         SetCanvasGroupInstant(MainUpButton,   1f, true);
         SetCanvasGroupInstant(MainDownButton, 1f, true);
         SetCanvasGroupInstant(MainCenterText, 1f, true);
+    }
+
+    // === Oyun akışına dışarıdan çağrılabilir kilit/aç ===
+    public void OnGameStarted_LockShop()   => SetShopOpenLock(true);
+    public void OnGameEnded_UnlockShop()   => SetShopOpenLock(false);
+
+    private void SetShopOpenLock(bool locked)
+    {
+        _isLocked = locked;
+
+        // a) Button komponentini kilitle / aç
+        if (shopeOpenButton)
+        {
+            shopeOpenButton.interactable = !locked;
+            shopeOpenButton.enabled = !locked; // inspector onclick tetiklerini de keser
+        }
+
+        // b) Ek raycast hedeflerini kapat
+        if (extraRaycastTargetsToDisable != null)
+        {
+            for (int i = 0; i < extraRaycastTargetsToDisable.Length; i++)
+                if (extraRaycastTargetsToDisable[i] != null)
+                    extraRaycastTargetsToDisable[i].raycastTarget = !locked;
+        }
+
+        // c) En kesin yöntem: tamamen gizlemek istersen (opsiyonel)
+        // if (shopeOpenButtonRoot) shopeOpenButtonRoot.SetActive(!locked);
     }
 
     // === Sekme Yönetimi ===
@@ -79,11 +129,9 @@ public class MarketCanvasManager : MonoBehaviour
             var tb = tabButtons[i];
             if (tb == null) continue;
 
-            // boy
             float h = (i == selected) ? selectedHeight : defaultHeight;
             SetButtonHeight(tb, h);
 
-            // ikon rengi
             if (tb.icon != null)
                 tb.icon.color = (i == selected) ? selectedIconColor : defaultIconColor;
         }
@@ -91,10 +139,9 @@ public class MarketCanvasManager : MonoBehaviour
 
     private void SetButtonHeight(TabButton tb, float height)
     {
-            var size = tb.rect.sizeDelta;
-            size.y = height;
-            tb.rect.sizeDelta = size;
-        
+        var size = tb.rect.sizeDelta;
+        size.y = height;
+        tb.rect.sizeDelta = size;
     }
 
     // === Helpers ===

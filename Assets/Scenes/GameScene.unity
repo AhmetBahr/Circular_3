@@ -5970,7 +5970,6 @@ GameObject:
   - component: {fileID: 995517907}
   - component: {fileID: 995517908}
   - component: {fileID: 995517909}
-  - component: {fileID: 995517910}
   m_Layer: 0
   m_Name: ShopManager
   m_TagString: Untagged
@@ -6020,6 +6019,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93738ea2dbbc69e4ea0d9836ca2ba9cc, type: 2}
   - {fileID: 11400000, guid: 4f874ec107d720143ab10c68fceb697f, type: 2}
   - {fileID: 11400000, guid: 44da3ca6682a08945b30887c7a799d7e, type: 2}
+  applySavedBackgroundOnStart: 1
+  idPrefix: bg
 --- !u!114 &995517908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6039,6 +6040,8 @@ MonoBehaviour:
   - {fileID: 621903265}
   - {fileID: 1411302452}
   - {fileID: 1398357829}
+  allBackgrounds: []
+  idPrefix: bg
 --- !u!114 &995517909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6076,20 +6079,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb52923813427c34c9e67c9ad82339e3, type: 2}
   - {fileID: 11400000, guid: 6a029ded821089e4a89172eb690f42f0, type: 2}
   playerSkinApplier: {fileID: 0}
---- !u!114 &995517910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 995517905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3381c0cd99692c4890ffec887ac7bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allItems: []
-  idPrefix: bg
 --- !u!1 &1037318806
 GameObject:
   m_ObjectHideFlags: 0

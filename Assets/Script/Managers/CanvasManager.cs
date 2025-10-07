@@ -44,6 +44,9 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private PlayerController player;
     [SerializeField] private Button AdmobButton;
 
+    [Header("Buttons")]
+    [SerializeField] private Button settingsButton; // <-- AYAR BUTONU REFERANSI
+
     private void OnEnable()
     {
         ProgressManager.OnCoinsChanged += UpdateCoinUI;
@@ -60,9 +63,15 @@ public class CanvasManager : MonoBehaviour
     {
         Invoke(nameof(startGameCanvas), 1.5f);
         NewHighScoreText.SetActive(false);
-        playerCoinText[0].text = gameManager.playercoin.ToString();
-        playerCoinText[1].text = gameManager.playercoin.ToString();
-        T_HighScoreText.text = gameManager.highScore.ToString();
+
+        // Run içi coin (0) gösterme yerine kalıcı coin UI güncel tutulacak.
+        if (playerCoinText != null)
+        {
+            for (int i = 0; i < playerCoinText.Length; i++)
+                if (playerCoinText[i]) playerCoinText[i].text = gameManager.playercoin.ToString();
+        }
+
+        if (T_HighScoreText) T_HighScoreText.text = gameManager.highScore.ToString();
         gameMenuGameObject.SetActive(false);
 
         int currentCoin = ProgressManager.GetPlayerCoin();
@@ -71,6 +80,8 @@ public class CanvasManager : MonoBehaviour
         // GameOver paneli başta kapalı ve tıklanamaz olsun
         SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false);
 
+        // Oyun başlamadan önce ayar butonu açık, oyun başlayınca kapatacağız.
+        if (settingsButton) settingsButton.interactable = true;
     }
 
     private void startGameCanvas()
@@ -88,6 +99,10 @@ public class CanvasManager : MonoBehaviour
 
         gameMenuGameObject.SetActive(true);
         StartCoroutine(FadeInCanvas(gameMenuCanvasGroup, 1f));
+
+        // Oyun başladı: flag + ayar butonunu kilitle
+        if (GameManager.Instance) GameManager.Instance.isGameStarted = true;
+        if (settingsButton) settingsButton.interactable = false;
     }
 
     // === GAME OVER AÇILIŞ ===
@@ -96,6 +111,10 @@ public class CanvasManager : MonoBehaviour
         NewHighScoreText.SetActive(gameManager.MainScore > gameManager.highScore);
         progressBar?.RestartCooldown();
         gameOverManager?.Show(0.5f);
+
+        // Oyun bitti: istersen ayar butonunu tekrar aç (istemezsen bu satırı sil)
+        if (settingsButton) settingsButton.interactable = true;
+        if (GameManager.Instance) GameManager.Instance.isGameStarted = false;
     }
 
     public void ResetGameOverUI()
@@ -141,7 +160,12 @@ public class CanvasManager : MonoBehaviour
         yield return new WaitForSeconds(.5f);
     }
 
-    public void OnClickSettingsPanel() => settingsPanel.SetActive(true);
+    public void OnClickSettingsPanel()
+    {
+        // Güvenlik: buton disable ise hiç açma
+        if (settingsButton && !settingsButton.interactable) return;
+        settingsPanel.SetActive(true);
+    }
 
     public void OnclickCloseSettingPanel()
     {
@@ -190,7 +214,6 @@ public class CanvasManager : MonoBehaviour
             }
         );
     }
-
 
     private IEnumerator ApplyLanguageChange(string newLang)
     {
@@ -271,8 +294,8 @@ public class CanvasManager : MonoBehaviour
 
     public void UpdateCoinUI(int currentCoin)
     {
-        playerCoinText[0].text = currentCoin.ToString();
-        playerCoinText[1].text = currentCoin.ToString();
+        if (playerCoinText == null) return;
+        for (int i = 0; i < playerCoinText.Length; i++)
+            if (playerCoinText[i]) playerCoinText[i].text = currentCoin.ToString();
     }
-    
 }

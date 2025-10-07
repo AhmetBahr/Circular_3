@@ -36,6 +36,11 @@ public class ShopItemUI : MonoBehaviour
     // Bu sınıf kendi içinde tüm kartlara "seçim değişti"yi duyuruyor
     public static event Action<string> OnBackgroundSelectedChanged;
 
+    public static void NotifyBackgroundSelected(string selectedKeyId)
+    {
+        OnBackgroundSelectedChanged?.Invoke(selectedKeyId);
+    }
+
     string Key(string raw) => string.IsNullOrEmpty(idPrefix) ? raw : $"{idPrefix}:{raw}";
 
     void OnEnable()
@@ -144,7 +149,7 @@ public class ShopItemUI : MonoBehaviour
         // Persist + tüm kartlara duyur
         string key = Key(currentItem.itemID);
         ProgressManager.SetSelectedBackgroundId(key);
-        OnBackgroundSelectedChanged?.Invoke(key);
+        NotifyBackgroundSelected(key);
     }
 
     void HandleSelectedChanged(string selectedKeyId)
