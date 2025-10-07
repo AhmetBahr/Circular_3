@@ -70,6 +70,7 @@ public class CanvasManager : MonoBehaviour
 
         // GameOver paneli başta kapalı ve tıklanamaz olsun
         SetCanvasGroupInstant(GameOverCanvasGroup, 0f, false);
+
     }
 
     private void startGameCanvas()
@@ -158,10 +159,12 @@ public class CanvasManager : MonoBehaviour
         if (AdmobButton) AdmobButton.interactable = false;
 
         AdManager.Instance.ShowRewarded(
+            RewardPlacement.Revive,
             onReward: () =>
             {
                 player.RespawnDefault();
                 progressBar?.ResetImmediate();
+                if (AdmobButton) AdmobButton.interactable = true;
             },
             onUnavailable: () =>
             {
@@ -169,6 +172,25 @@ public class CanvasManager : MonoBehaviour
             }
         );
     }
+
+    public void OnClick_AdRewardCoin()
+    {
+        if (AdmobButton) AdmobButton.interactable = false;
+
+        AdManager.Instance.ShowRewarded(
+            RewardPlacement.Coins,
+            onReward: () =>
+            {
+                ProgressManager.AddCoins(AdManager.Instance.coinsAmount); // coin ödülü
+                if (AdmobButton) AdmobButton.interactable = true;
+            },
+            onUnavailable: () =>
+            {
+                if (AdmobButton) AdmobButton.interactable = true;
+            }
+        );
+    }
+
 
     private IEnumerator ApplyLanguageChange(string newLang)
     {
@@ -194,8 +216,29 @@ public class CanvasManager : MonoBehaviour
 
     public void OnClickRestartGame()
     {
-        Invoke(nameof(resartScene), 0.5f);
+        ProgressManager.IncrementInterstitialCounter();
+        int counter = ProgressManager.GetInterstitialCounter();
+        
+        int freq = AdManager.Instance ? AdManager.Instance.GetInterstitialFrequency() : 3;
+
+        if (counter >= freq && AdManager.Instance)
+        {
+            AdManager.Instance.TryShowInterstitial(() =>
+            {
+                ProgressManager.ResetInterstitialCounter();
+                DoRestart(); 
+            });
+        }
+        else
+        {
+            DoRestart();
+        }
+    }
+
+    private void DoRestart()
+    {
         Time.timeScale = 1;
+        Invoke(nameof(resartScene), 0.5f);
     }
 
     public void PauseMenuOpen()
@@ -231,4 +274,5 @@ public class CanvasManager : MonoBehaviour
         playerCoinText[0].text = currentCoin.ToString();
         playerCoinText[1].text = currentCoin.ToString();
     }
+    
 }

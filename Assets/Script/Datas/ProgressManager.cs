@@ -123,6 +123,27 @@ public static class ProgressManager
         RaiseCoinsChanged();
         return true;
     }
+    
+    public static int GetInterstitialCounter()
+    {
+        EnsureLoaded();
+        return _cache.interstitialCounter;
+    }
+
+    public static void IncrementInterstitialCounter()
+    {
+        EnsureLoaded();
+        _cache.interstitialCounter++;
+        SaveProgress(_cache);
+    }
+
+    public static void ResetInterstitialCounter()
+    {
+        EnsureLoaded();
+        _cache.interstitialCounter = 0;
+        SaveProgress(_cache);
+    }
+
 
     // ---------------- Settings ----------------
     public static bool GetDarkTheme()  { EnsureLoaded(); return _cache.isDarkTheme; }
@@ -170,6 +191,8 @@ public static class ProgressManager
     }
 
     // ---------------- Selected Skin ----------------
+    public static event Action<string> OnBackgroundChanged;
+    
     public static string GetSelectedSkinId()
     {
         EnsureLoaded();
@@ -193,6 +216,35 @@ public static class ProgressManager
         EnsureLoaded();
         _cache.selectedBackgroundId = id ?? "";
         SaveProgress(_cache);
+        OnBackgroundChanged?.Invoke(_cache.selectedBackgroundId); // EK
+    }
+    
+    public static void EnsureDefaultSelections(string defaultSkinId, string defaultBgKey = null)
+    {
+        EnsureLoaded();
+
+        // Skin yoksa: varsayılanı sahip + seçili yap
+        if (string.IsNullOrEmpty(_cache.selectedSkinId) && !string.IsNullOrEmpty(defaultSkinId))
+        {
+            _cache.selectedSkinId = defaultSkinId;
+
+            // Owned listesine ekle (paralı değil, başlangıç hediyesi gibi)
+            if (_cache.boughtItems == null) _cache.boughtItems = new string[0];
+            if (!Array.Exists(_cache.boughtItems, id => id == defaultSkinId))
+            {
+                var list = new List<string>(_cache.boughtItems);
+                list.Add(defaultSkinId);
+                _cache.boughtItems = list.ToArray();
+            }
+            SaveProgress(_cache);
+        }
+
+        // Background için istersen
+        if (string.IsNullOrEmpty(_cache.selectedBackgroundId) && !string.IsNullOrEmpty(defaultBgKey))
+        {
+            _cache.selectedBackgroundId = defaultBgKey;
+            SaveProgress(_cache);
+        }
     }
 
 }

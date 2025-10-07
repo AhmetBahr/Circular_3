@@ -5,6 +5,7 @@ public class PlayerProgressData
 {
     public int highScore = 0;
     public int playercoin = 0;
+    public int interstitialCounter;
 
     public bool isDarkTheme = false;
     public bool isHardCore = false;

@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
+public enum RewardPlacement { Revive, Coins }
+
 public class AdManager : MonoBehaviour
 {
     public static AdManager Instance { get; private set; }
-
+    public int coinsAmount = 20;
+    // ——— Ad Unit IDs ———
 #if UNITY_ANDROID
-    [SerializeField] private string rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917"; // TEST
+    [Header("Android Rewarded IDs (PROD)")]
+    [SerializeField] private string reviveAdUnitId = "ca-app-pub-3433338749600523/6744319704";
+    [SerializeField] private string coinsAdUnitId  = "ca-app-pub-3433338749600523/6744319704";
+    [SerializeField] private string interstitialAdUnitId = "ca-app-pub-3433338749600523/5375397711"; 
+
 #elif UNITY_IOS
-    [SerializeField] private string rewardedAdUnitId = "ca-app-pub-3940256099942544/1712485313"; // TEST
+    [Header("iOS Rewarded IDs (PROD)")]
+    [SerializeField] private string reviveAdUnitId = "ca-app-pub-3433338749600523/6744319704";
+    [SerializeField] private string coinsAdUnitId  = "ca-app-pub-3433338749600523/6744319704";
+    [SerializeField] private string interstitialAdUnitId = "ca-app-pub-3433338749600523/5375397711";
 #else
-    [SerializeField] private string rewardedAdUnitId = "unused";
+    [SerializeField] private string reviveAdUnitId = "unused";
+    [SerializeField] private string coinsAdUnitId  = "unused";
+    [SerializeField] private string interstitialAdUnitId = "unused";
 #endif
 
     [Header("Pool")]
-    [SerializeField] private int preloadCount = 5;
+    [SerializeField] private int preloadCountPerPlacement = 3;
+    
+    [Header("Interstitial Settings")]
+    [SerializeField, Range(1, 10)] private int interstitialFrequency = 3; // her kaç restartta bir
+    private InterstitialAd _interstitialAd;
+    private Action _onInterstitialClosed;
 
-    private readonly Queue<RewardedAd> _loaded = new Queue<RewardedAd>();
-    private int _loadingInFlight = 0;
+    private readonly Dictionary<RewardPlacement, Queue<RewardedAd>> _pools = new();
+    private readonly Dictionary<RewardPlacement, int> _loadingInFlight = new();
 
     private void Awake()
     {
@@ -27,83 +44,141 @@ public class AdManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // GMA init
+        _pools[RewardPlacement.Revive] = new Queue<RewardedAd>();
+        _pools[RewardPlacement.Coins]  = new Queue<RewardedAd>();
+        _loadingInFlight[RewardPlacement.Revive] = 0;
+        _loadingInFlight[RewardPlacement.Coins]  = 0;
+
         MobileAds.Initialize(_ =>
         {
-            // init tamam → havuzu doldur
-            TopUpPool();
+            // Her yerleşimi doldur
+            TopUpPool(RewardPlacement.Revive);
+            TopUpPool(RewardPlacement.Coins);
+        });
+    }
+    
+    private void Start()
+    {
+        LoadInterstitial();
+    }
+
+    private void LoadInterstitial()
+    {
+        var request = new AdRequest();
+        InterstitialAd.Load(interstitialAdUnitId, request, (InterstitialAd ad, LoadAdError err) =>
+        {
+            if (err != null || ad == null)
+            {
+                Debug.LogWarning("[AdManager] Interstitial load failed: " + err);
+                return;
+            }
+
+            _interstitialAd = ad;
+
+            _interstitialAd.OnAdFullScreenContentClosed += () =>
+            {
+                // önce kapandığını haber ver, sonra yeniden yükle
+                _onInterstitialClosed?.Invoke();
+                _onInterstitialClosed = null;
+                LoadInterstitial();
+            };
+
+            _interstitialAd.OnAdFullScreenContentFailed += (AdError e) =>
+            {
+                Debug.LogWarning("[AdManager] Interstitial show failed: " + e);
+                // başarısız da olsa oyuna dönmek için callback'i tetikle
+                _onInterstitialClosed?.Invoke();
+                _onInterstitialClosed = null;
+                LoadInterstitial();
+            };
         });
     }
 
-    /// <summary> Havuzu hedef sayıda dolu tutar. </summary>
-    private void TopUpPool()
+    public void TryShowInterstitial(Action onClosed = null)
     {
-        while (_loaded.Count + _loadingInFlight < preloadCount)
+        if (_interstitialAd != null)
         {
-            _loadingInFlight++;
+            _onInterstitialClosed = onClosed; // kapanınca haber ver
+            _interstitialAd.Show();
+            _interstitialAd = null; // bir kez kullanılıyor
+        }
+        else
+        {
+            // reklam yoksa oyunu bekletme
+            onClosed?.Invoke();
+            LoadInterstitial();
+        }
+    }
 
-            // YENİ API: Build() YOK → direkt new AdRequest()
-            AdRequest request = new AdRequest();
+    public void TryShowInterstitial()
+    {
+        if (_interstitialAd != null)
+        {
+            _interstitialAd.Show();
+            _interstitialAd = null; // bir kez kullanılır
+            LoadInterstitial();
+        }
+    }
+    public int GetInterstitialFrequency() => interstitialFrequency;
 
-            RewardedAd.Load(rewardedAdUnitId, request, (RewardedAd ad, LoadAdError loadError) =>
+    private string GetUnitId(RewardPlacement p) =>
+        p == RewardPlacement.Revive ? reviveAdUnitId : coinsAdUnitId;
+
+    private void TopUpPool(RewardPlacement placement)
+    {
+        var q = _pools[placement];
+        while (q.Count + _loadingInFlight[placement] < preloadCountPerPlacement)
+        {
+            _loadingInFlight[placement]++;
+
+            // Yeni API: new AdRequest()
+            var request = new AdRequest();
+
+            RewardedAd.Load(GetUnitId(placement), request, (RewardedAd ad, LoadAdError loadError) =>
             {
-                _loadingInFlight--;
+                _loadingInFlight[placement]--;
 
-                if (loadError != null)
+                if (loadError != null || ad == null)
                 {
-                    Debug.LogWarning("[AdManager] Rewarded load failed: " + loadError);
-                    // istersen küçük bir gecikmeyle tekrar dene
-                    // Invoke(nameof(TopUpPool), 1.0f);
+                    Debug.LogWarning($"[AdManager] Load failed ({placement}): {loadError}");
                     return;
                 }
 
-                if (ad == null)
-                {
-                    Debug.LogWarning("[AdManager] Rewarded load returned null ad");
-                    return;
-                }
-
-                // fullscreen eventleri → kapanınca yerine yenisini yükle
-                ad.OnAdFullScreenContentClosed += () =>
-                {
-                    TopUpPool();
-                };
+                ad.OnAdFullScreenContentClosed += () => TopUpPool(placement);
                 ad.OnAdFullScreenContentFailed += (AdError err) =>
                 {
-                    Debug.LogWarning("[AdManager] Show failed: " + err);
-                    TopUpPool();
+                    Debug.LogWarning($"[AdManager] Show failed ({placement}): {err}");
+                    TopUpPool(placement);
                 };
 
-                _loaded.Enqueue(ad);
-
-                // Hala hedefe ulaşmadıysak devam yükle
-                TopUpPool();
+                q.Enqueue(ad);
+                // Hedefe ulaşmadıysak doldurmaya devam et
+                TopUpPool(placement);
             });
         }
     }
 
-    /// <summary>
-    /// Hazır bir ödüllü reklamı göster. Ödül kazanılırsa onReward çağrılır.
-    /// </summary>
-    public void ShowRewarded(Action onReward, Action onUnavailable = null)
+    public bool HasRewarded(RewardPlacement placement) =>
+        _pools.TryGetValue(placement, out var q) && q.Count > 0;
+    
+    
+    public void ShowRewarded(RewardPlacement placement, Action onReward, Action onUnavailable = null)
     {
-        if (_loaded.Count == 0)
+        var q = _pools[placement];
+        if (q.Count == 0)
         {
-            Debug.Log("[AdManager] No rewarded available. Loading…");
-            TopUpPool();
+            Debug.Log($"[AdManager] No rewarded available for {placement}. Loading…");
+            TopUpPool(placement);
             onUnavailable?.Invoke();
             return;
         }
 
-        var ad = _loaded.Dequeue();
-
-        // YENİ API: ödül callback’i Show içine verilir
+        var ad = q.Dequeue();
         ad.Show((Reward reward) =>
         {
             try { onReward?.Invoke(); }
             catch (Exception e) { Debug.LogException(e); }
         });
-
-        // Kapanınca/başarısızlıkta yerine yenisini TopUpPool ile event’lerde yüklüyoruz.
+        // Kapanınca TopUpPool zaten event’lerde çağrılıyor.
     }
 }
