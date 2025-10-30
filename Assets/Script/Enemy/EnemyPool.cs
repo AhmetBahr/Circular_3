@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,44 +5,90 @@ public class EnemyPool : MonoBehaviour
 {
     public static EnemyPool Instance;
 
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private int poolSize = 10;
-    [SerializeField] private int maxActiveEnemies = 3;
+    [System.Serializable]
+    public class PoolEntry
+    {
+        public GameObject prefab;          // farklı düşman tipleri
+        public int initialSize = 5;        // başlangıçta kaç tane üretilecek
+        public bool canExpand = true;      // havuz dolarsa yeni üretebilsin mi?
 
-    private List<GameObject> pool = new List<GameObject>();
+        [HideInInspector] public List<GameObject> pool; // runtime
+    }
+
+    [Header("Prefabs & Pool")]
+    [SerializeField] private PoolEntry[] entries;
+
+    [Header("Limits")]
+    [SerializeField] private int maxActiveEnemies = 6;  // toplam eşzamanlı aktif sınırı (tüm tipler)
+
+    private Dictionary<GameObject, PoolEntry> _map;
 
     void Awake()
     {
         Instance = this;
 
-        for (int i = 0; i < poolSize; i++)
+        _map = new Dictionary<GameObject, PoolEntry>();
+        foreach (var e in entries)
         {
-            GameObject obj = Instantiate(enemyPrefab);
-            obj.SetActive(false);
-            pool.Add(obj);
+            if (e.prefab == null) continue;
+            if (!_map.ContainsKey(e.prefab)) _map.Add(e.prefab, e);
+            e.pool = new List<GameObject>(e.initialSize);
+
+            for (int i = 0; i < e.initialSize; i++)
+            {
+                var obj = Instantiate(e.prefab, transform); // hierarchy temiz kalsın
+                obj.SetActive(false);
+                e.pool.Add(obj);
+            }
         }
     }
 
-    public GameObject GetEnemy()
+    public GameObject GetEnemy(GameObject prefab)
     {
-        foreach (GameObject enemy in pool)
+        if (prefab == null || !_map.ContainsKey(prefab)) return null;
+        if (GetTotalActiveCount() >= maxActiveEnemies) return null;
+
+        var entry = _map[prefab];
+
+        // pasif bul
+        for (int i = 0; i < entry.pool.Count; i++)
         {
-            if (!enemy.activeInHierarchy)
-                return enemy;
+            if (!entry.pool[i].activeInHierarchy)
+                return entry.pool[i];
+        }
+
+        // genişlet
+        if (entry.canExpand)
+        {
+            var obj = Instantiate(entry.prefab, transform);
+            obj.SetActive(false);
+            entry.pool.Add(obj);
+            return obj;
         }
 
         return null;
     }
 
-    public bool CanSpawn()
+    public int GetTotalActiveCount()
     {
         int count = 0;
-        foreach (var e in pool)
+        foreach (var e in entries)
         {
-            if (e.activeInHierarchy)
-                count++;
+            if (e.pool == null) continue;
+            for (int i = 0; i < e.pool.Count; i++)
+                if (e.pool[i].activeInHierarchy) count++;
         }
+        return count;
+    }
 
-        return count < maxActiveEnemies;
+    // (Opsiyonel) hepsini pasifleştirmek istersen
+    public void DespawnAll()
+    {
+        foreach (var e in entries)
+        {
+            if (e.pool == null) continue;
+            for (int i = 0; i < e.pool.Count; i++)
+                e.pool[i].SetActive(false);
+        }
     }
 }

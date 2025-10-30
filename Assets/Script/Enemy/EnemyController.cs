@@ -1,204 +1,123 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening; // DOTween kalabilir ama artık rotasyon için kullanılmıyor
 
-public enum EnemyDirection
-{
-    Down, Up, LeftDown, RightDown, LeftUp, RightUp
-}
+public enum EnemyDirection { Down, Up, LeftDown, RightDown, LeftUp, RightUp }
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Refs")]
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private Transform visualsChild;   // Sprite/Rigidbody/Collider burada
+    [SerializeField] private Rigidbody2D rb2;          // opsiyonel (child üstünde olabilir)
+    [SerializeField] private Collider2D col;           // opsiyonel (child)
+    [SerializeField] private SpriteRenderer spRender;  // opsiyonel (child)
 
-    [Header("Move")]
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float minTurnDelay = 1f;
-    [SerializeField] private float maxTurnDelay = 3f;
+    public EnemyDirection enemyDirection = EnemyDirection.Down;
 
     [Header("Lifetime")]
     [SerializeField] private float lifeTime = 8f;
 
-    [Header("Refs")]
-    [SerializeField] private Rigidbody2D rb2;
-    [SerializeField] private Collider2D col;
-    [SerializeField] private SpriteRenderer spRender;
-    [SerializeField] private Transform visualsChild; // EnemyBody
+    [Header("Spin")]
+    [Tooltip("Saniyede derece (degrees per second)")]
+    [SerializeField] private float spinSpeedDps = 180f;
+    [Tooltip("Spawn anında yön rastgele saat yönü / tersi seçilsin")]
+    [SerializeField] private bool randomizeSpinDirection = true;
 
-    private Vector3 _moveDirection;
-    private float _turnTimer;
-    private float _nextTurnTime;
+    private Vector3 _moveDir;
     private float _lifeTimer;
+    private float _signedSpin; // +cw / -ccw
 
-    public EnemyDirection enemyDirection;
-
-    // === YENİ: Sürekli rotasyon ayarları ===
-    [Header("Continuous Rotation")]
-    [Tooltip("Saniyede derece cinsinden taban hız")]
-    [SerializeField] private float baseRotationSpeed = 180f; // dps
-    [Tooltip("Spawn anında yön +/- rastgele seçilsin mi?")]
-    [SerializeField] private bool randomizeDirectionOnSpawn = true;
-
-    private float _currentRotSpeed; // işleyen hız (+/–)
-
-    // === ESKİ: rastgele aralıklı rotasyon (devre dışı) ===
-    /*
-    [SerializeField] private float minRotationDelay = 3f; 
-    [SerializeField] private float maxRotationDelay = 13f; 
-    private float _rotationTimer;
-    private float _nextRotationTime;
-    [SerializeField] private float rotationDuration = 0.5f; 
-    */
-
-    void OnEnable()
-    {
-        _lifeTimer = 0f;
-        _turnTimer = 0f;
-        _moveDirection = GetDirectionVector(enemyDirection);
-
-        ScheduleNextTurn();
-
-        // === YENİ: spawn'da dönüş yönünü ve hızı belirle ===
-        float sign = randomizeDirectionOnSpawn ? (Random.value < 0.5f ? -1f : 1f) : 1f;
-        _currentRotSpeed = baseRotationSpeed * sign;
-
-        // === ESKİ: rastgele aralıklı rotasyon zamanlaması (kaldırıldı) ===
-        // ScheduleNextRotation();
-
-        if (visualsChild != null)
-        {
-            visualsChild.DOKill(true);
-            // Artık sabit döneceği için açılı sıfırlamak zorunlu değil;
-            // istersen aç: visualsChild.localRotation = Quaternion.identity;
-        }
-    }
-
-    void OnDisable()
-    {
-        _lifeTimer = 0f;
-
-        if (visualsChild != null)
-        {
-            visualsChild.DOKill(true);
-            // visualsChild.localRotation = Quaternion.identity;
-        }
-    }
+    // İstersen spawner/prefab üstünden hız override etmek için
+    public void SetSpinSpeed(float dps) => spinSpeedDps = dps;
 
     private void Awake()
     {
-        var gameManagerObject = GameObject.Find("Player");
-        if (gameManagerObject != null)
+        // Player referansı (etiketle bulmak daha güvenli)
+        if (playerController == null)
         {
-            playerController = gameManagerObject.GetComponent<PlayerController>();
-        }
-        else
-        {
-            Debug.LogError("Player objesi sahnede bulunamadı!");
+            var playerObj = GameObject.FindWithTag("Player");
+            if (playerObj) playerController = playerObj.GetComponent<PlayerController>();
         }
 
+        // Görsel/child çöz
         if (visualsChild == null)
         {
-            visualsChild = transform.Find("EnemyBoudy");
-            if (visualsChild == null)
-            {
-                Debug.LogError("Altında 'EnemyBoudy' bulunamadı!");
-                return;
-            }
+            var sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr) visualsChild = sr.transform;
+            else visualsChild = transform; // son çare
         }
 
-        rb2 = visualsChild.GetComponent<Rigidbody2D>();
-        col = visualsChild.GetComponent<Collider2D>();
-        spRender = visualsChild.GetComponent<SpriteRenderer>();
-
-        if (rb2 == null) Debug.LogWarning("Rigidbody2D 'EnemyBoudy' üzerinde yok. Rotasyon Transform ile yapılacak.");
-        if (col == null) Debug.LogError("Collider2D 'EnemyBoudy' üzerinde bulunamadı!");
-        if (spRender == null) Debug.LogError("SpriteRenderer 'EnemyBoudy' üzerinde bulunamadı!");
+        // Bileşenleri child’dan topla
+        if (rb2 == null && visualsChild) rb2 = visualsChild.GetComponent<Rigidbody2D>() ?? visualsChild.GetComponentInChildren<Rigidbody2D>();
+        if (col == null && visualsChild) col = visualsChild.GetComponent<Collider2D>()     ?? visualsChild.GetComponentInChildren<Collider2D>();
+        if (spRender == null && visualsChild) spRender = visualsChild.GetComponent<SpriteRenderer>() ?? visualsChild.GetComponentInChildren<SpriteRenderer>();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        // Hareket
-        transform.position += _moveDirection * moveSpeed * Time.deltaTime;
+        _lifeTimer = 0f;
+        _moveDir   = GetDir(enemyDirection);
 
-        // === ESKİ: aralıklı rastgele rotasyon (kaldırıldı) ===
-        /*
-        _rotationTimer += Time.deltaTime;
-        if (_rotationTimer >= _nextRotationTime)
-        {
-            ApplyRandomRotation();
-            ScheduleNextRotation();
-        }
-        */
+        // Dönüş yönünü belirle
+        float sign = randomizeSpinDirection ? (Random.value < 0.5f ? -1f : 1f) : 1f;
+        _signedSpin = spinSpeedDps * sign;
+    }
 
-        // Yaşam süresi
+    private void Update()
+    {
+        // Lineer hareket
+        transform.position += _moveDir * moveSpeed * Time.deltaTime;
+
+        // Ömür
         _lifeTimer += Time.deltaTime;
         if (_lifeTimer >= lifeTime)
         {
             gameObject.SetActive(false);
+            return;
         }
 
-        // Rigidbody2D yoksa görseli burada döndür
+        // Rigidbody yoksa görseli Transform ile döndür
         if (rb2 == null && visualsChild != null)
         {
-            visualsChild.Rotate(0f, 0f, _currentRotSpeed * Time.deltaTime);
+            visualsChild.Rotate(0f, 0f, _signedSpin * Time.deltaTime);
         }
     }
 
-    // void FixedUpdate()
-    // {
-    //     // Rigidbody2D varsa fiziksel rotasyon tercih edilir
-    //     if (rb2 != null)
-    //     {
-    //         rb2.MoveRotation(rb2.rotation + _currentRotSpeed * Time.fixedDeltaTime);
-    //     }
-    // }
-
-    void ScheduleNextTurn()
+    private void FixedUpdate()
     {
-        _turnTimer = 0f;
-        _nextTurnTime = Random.Range(minTurnDelay, maxTurnDelay);
-    }
-
-    // === ESKİ: aralıklı rotasyon zamanlayıcısı (kaldırıldı) ===
-    /*
-    void ScheduleNextRotation()
-    {
-        _rotationTimer = 0f;
-        _nextRotationTime = Random.Range(minRotationDelay, maxRotationDelay);
-    }
-
-    void ApplyRandomRotation()
-    {
-        if (visualsChild == null) return;
-        float[] rotationAngles = { -90f, 90f, 180f };
-        float randomAngle = rotationAngles[Random.Range(0, rotationAngles.Length)];
-        visualsChild.DOLocalRotate(new Vector3(0, 0, randomAngle), rotationDuration, RotateMode.FastBeyond360)
-                    .SetEase(Ease.OutQuad);
-    }
-    */
-
-    private Vector3 GetDirectionVector(EnemyDirection dir)
-    {
-        switch (dir)
+        // Rigidbody varsa fizik tabanlı rotasyon
+        if (rb2 != null)
         {
-            case EnemyDirection.RightDown: return new Vector3(1, -1, 0).normalized;
+            rb2.MoveRotation(rb2.rotation + _signedSpin * Time.fixedDeltaTime);
+        }
+    }
+
+    private static Vector3 GetDir(EnemyDirection d)
+    {
+        switch (d)
+        {
+            case EnemyDirection.RightDown: return new Vector3( 1, -1, 0).normalized;
             case EnemyDirection.LeftDown:  return new Vector3(-1, -1, 0).normalized;
             case EnemyDirection.Down:      return Vector3.down;
             case EnemyDirection.Up:        return Vector3.up;
-            case EnemyDirection.LeftUp:    return new Vector3(-1, 1, 0).normalized;
-            case EnemyDirection.RightUp:   return new Vector3(1, 1, 0).normalized;
+            case EnemyDirection.LeftUp:    return new Vector3(-1,  1, 0).normalized;
+            case EnemyDirection.RightUp:   return new Vector3( 1,  1, 0).normalized;
             default:                       return Vector3.down;
         }
     }
 
+    // Çocuğun collider'ından relay ile çağırıyorsan bunu kullan
     public void HandleTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             VibrationManager.VibrateDeath();
-            playerController.PlayerDeath();
+            if (playerController) playerController.PlayerDeath();
             gameObject.SetActive(false);
         }
     }
+
+    // Eğer relay kullanmıyorsan ve collider bu objenin altında ise:
+    // private void OnTriggerEnter2D(Collider2D other) => HandleTriggerEnter2D(other);
 }

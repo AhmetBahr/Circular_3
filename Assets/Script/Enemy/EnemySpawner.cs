@@ -12,15 +12,24 @@ public class EnemySpawner : MonoBehaviour
         public EnemyDirection direction;
         public Vector2 xRange;
         public Vector2 yRange;
+
+        [Tooltip("Bu listede bir şey varsa prefab burada yazılanlardan rastgele seçilir. Boşsa global listeden seçilir.")]
+        public GameObject[] allowedPrefabs;
     }
 
+    [Header("Spawn Points")]
     [SerializeField] private SpawnPoint[] spawnPoints;
+
+    [Header("Global Prefabs (SpawnPoint boşsa buradan)")]
+    [SerializeField] private GameObject[] enemyPrefabs;
+
+    [Header("Tempo")]
     [SerializeField] private float spawnInterval = 3f;
 
     private Coroutine loop;
     private bool isRunning;
 
-    // Dışarıdan kontrol edilecek API
+    // Dış API
     public void StartSpawning()
     {
         if (isRunning) return;
@@ -36,38 +45,66 @@ public class EnemySpawner : MonoBehaviour
             StopCoroutine(loop);
             loop = null;
         }
-        // reset=true ise bir sonraki Start'ta beklemeden başlamak için ekstra bir şey yapmaya gerek yok
     }
 
     private IEnumerator SpawnLoop()
     {
+        var wait = new WaitForSeconds(spawnInterval);
+
         while (isRunning)
         {
-            // Spawn
-            if (EnemyPool.Instance.CanSpawn() && spawnPoints != null && spawnPoints.Length > 0)
+            if (spawnPoints != null && spawnPoints.Length > 0)
             {
                 int index = Random.Range(0, spawnPoints.Length);
                 var sp = spawnPoints[index];
 
-                Vector3 spawnPos = new Vector3(
-                    Random.Range(sp.xRange.x, sp.xRange.y),
-                    Random.Range(sp.yRange.x, sp.yRange.y),
-                    0f
-                ) + sp.pointTransform.position;
+                var prefab = ChoosePrefab(sp);
+                if (prefab != null && EnemyPool.Instance != null)
+                {
+                    if (EnemyPool.Instance.GetTotalActiveCount() < int.MaxValue) // genel sınır içeride de kontrol ediliyor
+                    {
+                        var enemy = EnemyPool.Instance.GetEnemy(prefab);
+                        if (enemy != null)
+                        {
+                            var spawnPos = new Vector3(
+                                Random.Range(sp.xRange.x, sp.xRange.y),
+                                Random.Range(sp.yRange.x, sp.yRange.y),
+                                0f
+                            ) + (sp.pointTransform ? sp.pointTransform.position : Vector3.zero);
 
-                GameObject enemy = EnemyPool.Instance.GetEnemy();
-                enemy.transform.position = spawnPos;
-                enemy.transform.rotation = Quaternion.identity;
+                            enemy.transform.position = spawnPos;
+                            enemy.transform.rotation = Quaternion.identity;
 
-                var controller = enemy.GetComponent<EnemyController>();
-                controller.enemyDirection = sp.direction;
+                            var controller = enemy.GetComponent<EnemyController>();
+                            if (controller != null)
+                                controller.enemyDirection = sp.direction;
 
-                enemy.SetActive(true);
+                            enemy.SetActive(true);
+                        }
+                    }
+                }
             }
 
-            // spawnInterval değişirse etkilesin diye her seferinde yeni WaitForSeconds
-            yield return new WaitForSeconds(spawnInterval);
+            // spawnInterval her frame değiştirilebilsin istiyorsan wait'i burada tekrar oluştur
+            yield return wait;
         }
+    }
+
+    private GameObject ChoosePrefab(SpawnPoint sp)
+    {
+        // Yerel liste varsa ondan seç
+        if (sp.allowedPrefabs != null && sp.allowedPrefabs.Length > 0)
+        {
+            return sp.allowedPrefabs[Random.Range(0, sp.allowedPrefabs.Length)];
+        }
+
+        // Global liste
+        if (enemyPrefabs != null && enemyPrefabs.Length > 0)
+        {
+            return enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        }
+
+        return null;
     }
 
 #if UNITY_EDITOR
@@ -75,12 +112,11 @@ public class EnemySpawner : MonoBehaviour
     {
         if (spawnPoints == null) return;
 
-        Gizmos.color = Color.black;
-
         foreach (var sp in spawnPoints)
         {
             if (sp.pointTransform != null)
             {
+                Gizmos.color = Color.black;
                 Gizmos.DrawSphere(sp.pointTransform.position, 0.1f);
 
                 Vector3 min = new Vector3(sp.xRange.x, sp.yRange.x, 0) + sp.pointTransform.position;

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 public class LanguageSelectorUI : MonoBehaviour
 {
     public TextMeshProUGUI languageLabel;
-    public GameObject languageChangedPopup;
-    
-    private List<string> languageCodes = new List<string> { "tr", "en", "de", "fr", "es" , "az" , "ru" , "it" };
+    public GameObject languageChangedPopup; // artık opsiyonel
+
+    private List<string> languageCodes = new List<string> { "tr", "en", "de", "fr", "es", "az", "ru", "it" };
     private int currentIndex = 0;
     private string selectedLanguageCode;
     private string previousLanguageCode;
@@ -23,11 +23,23 @@ public class LanguageSelectorUI : MonoBehaviour
         UpdateLanguageLabel();
     }
 
+    void Update()
+    {
+        // Ayarlar paneli açıkken okları dinlemek istiyorsan burası yeterli.
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            NextLanguage();
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            PreviousLanguage();
+    }
+
     public void NextLanguage()
     {
         currentIndex = (currentIndex + 1) % languageCodes.Count;
         selectedLanguageCode = languageCodes[currentIndex];
         UpdateLanguageLabel();
+
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.ChangeLanguageImmediate(selectedLanguageCode); // ← anında yükle
     }
 
     public void PreviousLanguage()
@@ -35,14 +47,16 @@ public class LanguageSelectorUI : MonoBehaviour
         currentIndex = (currentIndex - 1 + languageCodes.Count) % languageCodes.Count;
         selectedLanguageCode = languageCodes[currentIndex];
         UpdateLanguageLabel();
+
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.ChangeLanguageImmediate(selectedLanguageCode); // ← anında yükle
     }
 
     private void UpdateLanguageLabel()
     {
         string code = languageCodes[currentIndex];
-        languageLabel.text = code.ToString(); 
+        languageLabel.text = code.ToUpperInvariant(); // İstersen burada görünen adı kullan
     }
-
 
     public string GetSelectedLanguageCode()
     {

@@ -170,12 +170,13 @@ public class CanvasManager : MonoBehaviour
     public void OnclickCloseSettingPanel()
     {
         ProgressManager.SetSoundOpen(gameManager.isSoundOpen);
-        ProgressManager.SetLanguage(languageSelector.GetSelectedLanguageCode());
 
-        if (languageSelector.LanguageChanged())
-            StartCoroutine(ApplyLanguageChange(languageSelector.GetSelectedLanguageCode()));
-        else
-            settingsPanel.SetActive(false);
+        // Dil kaydı LanguageManager içinde PlayerPrefs’e zaten yazılıyor.
+        // ProgressManager.SetLanguage(languageSelector.GetSelectedLanguageCode()); // ← gerek yok
+
+        settingsPanel.SetActive(false);
+        // Burada senin akışına göre:
+        // ShowMainMenu();  veya  SceneManager.LoadScene("MainMenu");
     }
 
     public void OnClick_AdRevive()

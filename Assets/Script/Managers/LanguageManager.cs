@@ -15,20 +15,31 @@ public class LanguageManager : MonoBehaviour
     public delegate void LanguageChanged();
     public static event LanguageChanged OnLanguageChanged;
 
+    private Coroutine _loadRoutine; // ← çakışmaları önlemek için
+
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject); // sahneler arası taşımak istersen aç
 
             string savedLanguage = PlayerPrefs.GetString("language", currentLanguage);
-            StartCoroutine(LoadLanguage(savedLanguage));
+            ChangeLanguageImmediate(savedLanguage); // ← anında yükleme
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// Dili anında değiştirir. Önceki yükleme devam ediyorsa iptal eder.
+    /// </summary>
+    public void ChangeLanguageImmediate(string languageCode)
+    {
+        if (_loadRoutine != null) StopCoroutine(_loadRoutine);
+        _loadRoutine = StartCoroutine(LoadLanguage(languageCode));
     }
 
     public IEnumerator LoadLanguage(string languageCode)
@@ -79,7 +90,6 @@ public class LanguageManager : MonoBehaviour
         return $"#{key}";
     }
 }
-
 
 [System.Serializable]
 public class LocalizationData

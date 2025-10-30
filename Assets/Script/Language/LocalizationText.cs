@@ -11,7 +11,8 @@ public class LocalizationText : MonoBehaviour
     void OnEnable()
     {
         LanguageManager.OnLanguageChanged += UpdateText;
-        textComponent = GetComponent<TextMeshProUGUI>();
+        if (textComponent == null)
+            textComponent = GetComponent<TextMeshProUGUI>();
         UpdateText();
     }
 
