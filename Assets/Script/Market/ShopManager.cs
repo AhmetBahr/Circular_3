@@ -14,7 +14,8 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        // Önceden iki kere instantiate ediyordu. Sadeleştirdim.
+        SeedDefaultsForBackgrounds();
+
         LoadShop();
 
         if (applySavedBackgroundOnStart)
@@ -35,6 +36,29 @@ public class ShopManager : MonoBehaviour
             ShopItemUI itemUI = obj.GetComponent<ShopItemUI>() ?? obj.GetComponentInChildren<ShopItemUI>(true);
             if (!itemUI) { Debug.LogError("Prefab'ta ShopItemUI yok.", obj); continue; }
             itemUI.Setup(itemData);
+        }
+    }
+    
+    private void SeedDefaultsForBackgrounds()
+    {
+        if (allItems == null) return;
+
+        foreach (var item in allItems)
+        {
+            if (item == null) continue;
+
+            if (item.unlockedByDefault)
+            {
+                // ProgressManager BG sahipliğini nasıl tutuyorsa ona göre id ver:
+                // Eğer satın alma/owned tarafında prefix'li ID kullanıyorsan (örn: "bg:forest"):
+                // var purchaseId = Key(item.itemID);
+
+                // Eğer raw id kullanıyorsan (örn: "forest"):
+                var purchaseId = item.itemID;
+
+                if (!ProgressManager.IsItemBought(purchaseId))
+                    ProgressManager.MarkItemAsBought(purchaseId);
+            }
         }
     }
 

@@ -21,9 +21,9 @@ public class ShopItemUI : MonoBehaviour
     [SerializeField] private Color selectedBg = new(0.20f, 0.70f, 0.60f, 1f);
 
     [Header("Localization Keys (UI)")]
-    [Tooltip("JSON'daki 'Seç' metninin key'i (ör. 21)")]
+    [Tooltip("Metin sözlüğündeki 'Seç' key'i (ör. 21)")]
     [SerializeField] private string selectKey = "21";
-    [Tooltip("JSON'daki 'Seçili' metninin key'i (ör. 22)")]
+    [Tooltip("Metin sözlüğündeki 'Seçili' key'i (ör. 22)")]
     [SerializeField] private string selectedKey = "22";
 
     [Header("ID Namespace (çapraz market karışmasın)")]
@@ -43,7 +43,7 @@ public class ShopItemUI : MonoBehaviour
 
     string Key(string raw) => string.IsNullOrEmpty(idPrefix) ? raw : $"{idPrefix}:{raw}";
 
-    void OnEnable()
+    private void OnEnable()
     {
         OnBackgroundSelectedChanged += HandleSelectedChanged;
 
@@ -54,15 +54,18 @@ public class ShopItemUI : MonoBehaviour
         }
 
         LanguageManager.OnLanguageChanged += HandleLanguageChanged;
+        
+        HandleLanguageChanged();
     }
 
-    void OnDisable()
+
+    private void OnDisable()
     {
         OnBackgroundSelectedChanged -= HandleSelectedChanged;
         LanguageManager.OnLanguageChanged -= HandleLanguageChanged;
     }
 
-    void HandleLanguageChanged()
+    private void HandleLanguageChanged()
     {
         // Dil değişince metinleri tazele
         RefreshSelectVisuals();
@@ -94,9 +97,8 @@ public class ShopItemUI : MonoBehaviour
 
         if (currentItem != null && !string.IsNullOrEmpty(currentItem.itemNameKey))
         {
-            string loc = LanguageManager.Instance
-                ? LanguageManager.Instance.GetLocalizedValue(currentItem.itemNameKey)
-                : currentItem.itemNameKey; // LM yoksa key göster
+            // ESKİ: LanguageManager.Instance.GetLocalizedValue(...)
+            string loc = Texts_Script.Get(currentItem.itemNameKey);
             itemNameText.text = loc;
         }
         else
@@ -166,10 +168,8 @@ public class ShopItemUI : MonoBehaviour
         if (selectButtonText)
         {
             var key = isSelected ? selectedKey : selectKey;
-            string loc = LanguageManager.Instance
-                ? LanguageManager.Instance.GetLocalizedValue(key)
-                : key; // LM yoksa key göster
-            selectButtonText.text = loc;
+            // ESKİ: LanguageManager.Instance.GetLocalizedValue(key)
+            selectButtonText.text = Texts_Script.Get(key);
         }
 
         if (selectButtonBg) selectButtonBg.color = isSelected ? selectedBg : normalBg;

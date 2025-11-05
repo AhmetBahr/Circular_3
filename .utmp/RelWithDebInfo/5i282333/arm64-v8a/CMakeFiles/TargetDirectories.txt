@@ -1,0 +1,5 @@
+C:/Unity Games/Circular_3/.utmp/RelWithDebInfo/5i282333/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Unity Games/Circular_3/.utmp/RelWithDebInfo/5i282333/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Unity Games/Circular_3/.utmp/RelWithDebInfo/5i282333/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Unity Games/Circular_3/.utmp/RelWithDebInfo/5i282333/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Unity Games/Circular_3/.utmp/RelWithDebInfo/5i282333/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

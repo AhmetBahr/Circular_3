@@ -64,6 +64,8 @@ public class MarketCanvasManager : MonoBehaviour
         SetCanvasGroupInstant(MainCenterText, 0f, true);
 
         OpenMarket(defaultMarketIndex); // her açılışta varsayılan market
+        
+        LanguageManager.ForceNotify();
     }
 
     public void OnclickCloseShopePanel()

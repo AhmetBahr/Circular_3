@@ -6,27 +6,24 @@ using UnityEngine.UI;
 public class SkinItemUI : MonoBehaviour
 {
     [Header("Display")]
-    [SerializeField] private TMP_Text itemNameText;   // T_ItemName
-    [SerializeField] private Image iconImage;         // küçük görsel
+    [SerializeField] private TMP_Text itemNameText;
+    [SerializeField] private Image iconImage;
 
     [Header("Select (owned)")]
-    [SerializeField] private Button selectButton;     // B_SelectButton
-    [SerializeField] private TMP_Text selectBtnText;  // B_SelectButton/Text (TMP)
-    [SerializeField] private Image selectBtnBg;       // B_SelectButton Image
+    [SerializeField] private Button selectButton;
+    [SerializeField] private TMP_Text selectBtnText;
+    [SerializeField] private Image selectBtnBg;
     [SerializeField] private Color normalBg = new(0.85f,0.85f,0.85f,1);
     [SerializeField] private Color selectedBg = new(0.20f,0.70f,0.60f,1);
 
     [Header("Buy (not owned)")]
-    [SerializeField] private Button buyButton;        // B_OpenButton
-    [SerializeField] private TMP_Text buyPriceText;   // B_OpenButton/Text (TMP)
+    [SerializeField] private Button buyButton;
+    [SerializeField] private TMP_Text buyPriceText;
 
     [Header("Localization Keys (UI)")]
-    [Tooltip("JSON'daki 'Seç' metninin key'i (ör. 21)")]
     [SerializeField] private string selectKey = "21";
-    [Tooltip("JSON'daki 'Seçili' metninin key'i (ör. 22)")]
     [SerializeField] private string selectedKey = "22";
 
-    // state & callbacks
     private PlayerSkinSO _data;
     private bool _owned;
     private bool _selected;
@@ -36,6 +33,7 @@ public class SkinItemUI : MonoBehaviour
     private void OnEnable()
     {
         LanguageManager.OnLanguageChanged += HandleLanguageChanged;
+        Refresh();
     }
 
     private void OnDisable()
@@ -45,7 +43,7 @@ public class SkinItemUI : MonoBehaviour
 
     private void HandleLanguageChanged()
     {
-        Refresh(); // dil değişince tüm metinleri tazele
+        Refresh();
     }
 
     public void Setup(PlayerSkinSO data, bool owned, bool selected,
@@ -69,6 +67,13 @@ public class SkinItemUI : MonoBehaviour
             selectButton.onClick.AddListener(OnClickSelect);
         }
 
+        // Başlangıçtan açık skin ise owned/selected yap
+        if (_data != null && _data.unlockedByDefault)
+        {
+            _owned = true;
+            _selected = true;
+        }
+
         Refresh();
     }
 
@@ -83,49 +88,44 @@ public class SkinItemUI : MonoBehaviour
         if (_owned || _data == null) return;
         if (_onPurchase != null && _onPurchase(_data))
         {
-            _owned = true;            // hemen sahip oldu
-            Refresh();                // buy gizlenir, select aktif olur
+            _owned = true;
+            Refresh();
         }
     }
 
     void OnClickSelect()
     {
         if (!_owned || _data == null) return;
-        _onSelect?.Invoke(_data);     // anında uygula
-        _selected = true;             // kartını seçili boya (tekilliği manager ayarlar)
+        _onSelect?.Invoke(_data);
+        _selected = true;
         Refresh();
     }
 
     void Refresh()
     {
-        // Fiyat ve buton görünürlükleri
-        if (buyButton)      buyButton.gameObject.SetActive(!_owned);
-        if (buyPriceText)   buyPriceText.text = _data ? _data.price.ToString() : "";
+        // --- butonlar ---
+        if (buyButton)    buyButton.gameObject.SetActive(!_owned);
+        if (buyPriceText) buyPriceText.text = _data ? _data.price.ToString() : "";
+        if (selectButton) selectButton.interactable = _owned;
+        if (selectBtnBg)  selectBtnBg.color = _selected ? selectedBg : normalBg;
 
-        if (selectButton)   selectButton.interactable = _owned;
-        if (selectBtnBg)    selectBtnBg.color = _selected ? selectedBg : normalBg;
-
-        // === Localization ===
-        // 1) İsim: SO içindeki displayNameKey'ten
+        // --- Localization ---
         if (itemNameText)
         {
             string nameText = "";
             if (_data != null && !string.IsNullOrEmpty(_data.displayNameKey))
             {
-                nameText = LanguageManager.Instance
-                    ? LanguageManager.Instance.GetLocalizedValue(_data.displayNameKey)
-                    : _data.displayNameKey; // LM yoksa key göster
+                // ESKİ: LanguageManager.Instance.GetLocalizedValue(_data.displayNameKey)
+                nameText = Texts_Script.Get(_data.displayNameKey);
             }
             itemNameText.text = nameText;
         }
 
-        // 2) Seç / Seçili: UI içindeki key'lerden
         if (selectBtnText)
         {
             var key = _selected ? selectedKey : selectKey;
-            string localized = LanguageManager.Instance
-                ? LanguageManager.Instance.GetLocalizedValue(key)
-                : key; // LM yoksa key göster
+            // ESKİ: LanguageManager.Instance.GetLocalizedValue(key)
+            string localized = Texts_Script.Get(key);
             selectBtnText.text = localized;
         }
     }

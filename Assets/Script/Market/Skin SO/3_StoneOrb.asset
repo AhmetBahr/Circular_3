@@ -15,7 +15,8 @@ MonoBehaviour:
   skinId: Skinn_3
   displayNameKey: Skin_3
   icon: {fileID: 2034271048, guid: 25da4e5705546294b9309540c8b7b018, type: 3}
-  price: 0
+  price: 50
+  unlockedByDefault: 0
   blendIndex: 3
   overridePlayerColor: 1
   playerColor: {r: 1, g: 1, b: 1, a: 1}

@@ -510,7 +510,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AdMob
+  m_text: Reklam izle ve
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 78.9
+  m_fontSize: 60.4
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -654,7 +654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &65851642
 Transform:
   m_ObjectHideFlags: 0
@@ -776,7 +776,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close Sound
+  m_text: "Sesi A\xE7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Titresim
+  m_text: "Titre\u015Fim"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -2235,7 +2235,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tutorial
+  m_text: "\xD6\u011Fretici"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -3327,7 +3327,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   languageLabel: {fileID: 3195658722190618011}
-  languageChangedPopup: {fileID: 2455879037527274803}
 --- !u!114 &460977952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3340,8 +3339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e168798a7406574ea0b437a1e0d7f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLanguage: en
-  isReady: 0
+  order: 0000000001000000020000000300000004000000050000000600000007000000
 --- !u!4 &460977953
 Transform:
   m_ObjectHideFlags: 0
@@ -3416,7 +3414,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New high score
+  m_text: "Yeni Y\xFCksek Skor"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -3600,9 +3598,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Tutoiral
-
-'
+  m_text: "\xD6\u011Fretici"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -3890,7 +3886,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close Sound
+  m_text: "Sesi A\xE7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -4027,9 +4023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Restart
-
-'
+  m_text: Tekrar Oyna
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -4233,8 +4227,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 23936186792525e45acb862226433a51, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0bfc8847f52228849a67e0d0367dd864, type: 3}
+  m_Color: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5571,7 +5565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: High score
+  m_text: "Y\xFCksek Skor"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -5598,7 +5592,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 84
+  m_fontSize: 73.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5869,135 +5863,6 @@ MonoBehaviour:
   canvasManager: {fileID: 1430967}
   mainScoreText: {fileID: 912141225}
   MainScoreTextGameObject: {fileID: 912141223}
---- !u!1 &968427390
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 968427391}
-  - component: {fileID: 968427392}
-  m_Layer: 0
-  m_Name: SFXAudio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &968427391
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968427390}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1943431774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &968427392
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968427390}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &995517905
 GameObject:
   m_ObjectHideFlags: 0
@@ -6080,7 +5945,19 @@ MonoBehaviour:
   - {fileID: 621903265}
   - {fileID: 1411302452}
   - {fileID: 1398357829}
-  allBackgrounds: []
+  allBackgrounds:
+  - {fileID: 11400000, guid: 577512e29206a02409b9f9b137ea14a1, type: 2}
+  - {fileID: 11400000, guid: 97020c2cf18076c479def6e6ff6c9aa7, type: 2}
+  - {fileID: 11400000, guid: a57ce355bff0cc541aa0a2d45c53d20d, type: 2}
+  - {fileID: 11400000, guid: edb183d7183c4d245837824b2ab9e1ab, type: 2}
+  - {fileID: 11400000, guid: a4e504d33fcf49a498dbc5d9129f943c, type: 2}
+  - {fileID: 11400000, guid: 72892359d7d33104ea430e0c3cf954d8, type: 2}
+  - {fileID: 11400000, guid: fa42377eef8569e4b82d54cf49b19020, type: 2}
+  - {fileID: 11400000, guid: 4830e5325a8a7f247ba5e44b0537f945, type: 2}
+  - {fileID: 11400000, guid: c18a5f4d4f73494499ddc503ca3a2c45, type: 2}
+  - {fileID: 11400000, guid: 93738ea2dbbc69e4ea0d9836ca2ba9cc, type: 2}
+  - {fileID: 11400000, guid: 4f874ec107d720143ab10c68fceb697f, type: 2}
+  - {fileID: 11400000, guid: 44da3ca6682a08945b30887c7a799d7e, type: 2}
   idPrefix: bg
 --- !u!114 &995517909
 MonoBehaviour:
@@ -6190,7 +6067,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close music
+  m_text: "M\xFCzi\u011Fi A\xE7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -6556,7 +6433,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: Tekrar Oyna
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -7443,7 +7320,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Market
+  m_text: Ayarlar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -8941,8 +8818,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 23936186792525e45acb862226433a51, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0bfc8847f52228849a67e0d0367dd864, type: 3}
+  m_Color: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9032,8 +8909,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 884c191714266ec47b6ce8c3c88e5fa9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d158dee428ede24448d1cba23db5380d, type: 3}
+  m_Color: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9203,8 +9080,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 884c191714266ec47b6ce8c3c88e5fa9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d158dee428ede24448d1cba23db5380d, type: 3}
+  m_Color: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9597,6 +9474,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443722002}
   m_CullTransparentMesh: 1
+--- !u!1 &1444030561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444030562}
+  m_Layer: 0
+  m_Name: AppBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1444030562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444030561}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1555218910}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1448513552
 GameObject:
   m_ObjectHideFlags: 0
@@ -9672,135 +9580,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448513552}
   m_CullTransparentMesh: 1
---- !u!1 &1534946325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1534946326}
-  - component: {fileID: 1534946327}
-  m_Layer: 0
-  m_Name: MusicAudip
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1534946326
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534946325}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1943431774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1534946327
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534946325}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.05
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1542235297
 GameObject:
   m_ObjectHideFlags: 0
@@ -9928,13 +9707,13 @@ Transform:
   - {fileID: 1542235298}
   - {fileID: 1430966}
   - {fileID: 1212753986}
-  - {fileID: 1943431774}
   - {fileID: 460977953}
   - {fileID: 1334480104}
   - {fileID: 65851642}
   - {fileID: 995517906}
   - {fileID: 825275216}
   - {fileID: 1441377395}
+  - {fileID: 1444030562}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1578414088
@@ -10244,7 +10023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AdMob
+  m_text: Canlan
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10853,8 +10632,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 1ddecd35ad3e97c4ba705f207cd7afb2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9e883b58e99e17d4da72feb5582b85ba, type: 3}
+  m_Color: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -12656,68 +12435,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1170414593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1943431773
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1943431774}
-  - component: {fileID: 1943431775}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1943431774
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943431773}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1534946326}
-  - {fileID: 968427391}
-  m_Father: {fileID: 1555218910}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1943431775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943431773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c987894706db30458690d4451fec3ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 1534946327}
-  sfxSource: {fileID: 968427392}
-  musicClips:
-  - {fileID: 8300000, guid: af96b11fe4ade9a43a6f0dc479d0cbb1, type: 3}
-  - {fileID: 8300000, guid: e3bfff472fe29dd4bbcbc3a320f9c831, type: 3}
-  - {fileID: 8300000, guid: 68b13b8ac0882504284f8561993f0d3f, type: 3}
-  - {fileID: 8300000, guid: b802d7fe2bb26c64ba06243f31b4727d, type: 3}
-  - {fileID: 8300000, guid: ca94f3d845d83fa4688430e0314655b9, type: 3}
-  - {fileID: 8300000, guid: 8d8f61e8a03712146b83943f29fbe8f4, type: 3}
-  - {fileID: 8300000, guid: 3b3fc507d1e72a44489697a5315c2bdf, type: 3}
-  - {fileID: 8300000, guid: 7888b55a03382834f86d4b51eefe354b, type: 3}
-  - {fileID: 8300000, guid: 7569bf0282d860941941c8e157585f69, type: 3}
-  - {fileID: 8300000, guid: f37e5f82a5f67704b9f51c89adb7f3e4, type: 3}
-  sfxPickup: {fileID: 8300000, guid: 459f4c24efc6f124a95dbbcdb832643c, type: 3}
-  sfxDeath: {fileID: 8300000, guid: c62a1ef09bd5c4a43a00a21e9726dd4d, type: 3}
-  sfxButton: {fileID: 8300000, guid: 01f09469d8e276049a3033349256decd, type: 3}
 --- !u!1 &1947211085
 GameObject:
   m_ObjectHideFlags: 0
@@ -13412,7 +13129,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Devam et
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -13800,8 +13517,8 @@ SpriteRenderer:
   m_SortingLayerID: 1254978569
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: fa43799a6b241ea4caebbd74eb0bc2d4, type: 3}
-  m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a1df765378694b745a40a62662f6d330, type: 3}
+  m_Color: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -14364,7 +14081,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close Sound
+  m_text: "Sesi A\xE7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -14455,7 +14172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Yes
+  m_text: Evet
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -14759,7 +14476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Language
+  m_text: Dil
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -14935,7 +14652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No
+  m_text: "Hay\u0131r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -15991,7 +15708,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 460977951}
         m_TargetAssemblyTypeName: LanguageSelectorUI, Assembly-CSharp
-        m_MethodName: PreviousLanguage
+        m_MethodName: OnLeftButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16555,7 +16272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Delete Data
+  m_text: "Datalar\u0131 sil"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -17031,7 +16748,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 460977951}
         m_TargetAssemblyTypeName: LanguageSelectorUI, Assembly-CSharp
-        m_MethodName: NextLanguage
+        m_MethodName: OnRightButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17135,7 +16852,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Options
+  m_text: Ayarlar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -17272,7 +16989,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Delete
+  m_text: Sil
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
@@ -17299,7 +17016,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.3
+  m_fontSize: 79.9
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -17538,7 +17255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You will delete your high score data. Are you SURE!
+  m_text: "Y\xFCksek skor verilerinizi sileceksiniz. Emin misin!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
   m_sharedMaterial: {fileID: 7684665416819270348, guid: b78ff0f7f0c74664d838eb0ab7313817, type: 2}
@@ -17685,7 +17402,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Titresim
+  m_text: "Titre\u015Fim"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}
   m_sharedMaterial: {fileID: 3066548394980668729, guid: 7d49a8b5c731dbe41996c0b1ed00bf44, type: 2}

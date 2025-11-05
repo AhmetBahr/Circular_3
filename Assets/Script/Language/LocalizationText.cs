@@ -4,28 +4,41 @@ using TMPro;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class LocalizationText : MonoBehaviour
 {
+    [Tooltip("Texts_Script içindeki anahtar")]
     public string key;
 
-    private TextMeshProUGUI textComponent;
+    private TextMeshProUGUI _tmp;
 
-    void OnEnable()
+    private void Awake()
     {
-        LanguageManager.OnLanguageChanged += UpdateText;
-        if (textComponent == null)
-            textComponent = GetComponent<TextMeshProUGUI>();
-        UpdateText();
+        if (_tmp == null) _tmp = GetComponent<TextMeshProUGUI>();
     }
 
-    void OnDisable()
+    private void OnEnable()
     {
-        LanguageManager.OnLanguageChanged -= UpdateText;
+        LanguageManager.OnLanguageChanged += Apply;   // dili dinle
+        Apply();
     }
 
-    public void UpdateText()
+    private void OnDisable()
     {
-        if (LanguageManager.Instance != null && LanguageManager.Instance.isReady)
+        LanguageManager.OnLanguageChanged -= Apply;
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!Application.isPlaying)
         {
-            textComponent.text = LanguageManager.Instance.GetLocalizedValue(key);
+            if (_tmp == null) _tmp = GetComponent<TextMeshProUGUI>();
+            Apply();
         }
+    }
+#endif
+
+    private void Apply()
+    {
+        if (_tmp == null) return;
+        _tmp.text = Texts_Script.Get(key);
     }
 }

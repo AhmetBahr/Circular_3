@@ -45,7 +45,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private Button AdmobButton;
 
     [Header("Buttons")]
-    [SerializeField] private Button settingsButton; // <-- AYAR BUTONU REFERANSI
+    [SerializeField] private Button settingsButton;
 
     private void OnEnable()
     {
@@ -216,15 +216,15 @@ public class CanvasManager : MonoBehaviour
         );
     }
 
-    private IEnumerator ApplyLanguageChange(string newLang)
-    {
-        if (languageChangedPopup != null && popupText != null)
-            languageChangedPopup.SetActive(true);
-
-        yield return StartCoroutine(LanguageManager.Instance.LoadLanguage(newLang));
-        yield return new WaitForSeconds(1.8f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+    // private IEnumerator ApplyLanguageChange(string newLang)
+    // {
+    //     if (languageChangedPopup != null && popupText != null)
+    //         languageChangedPopup.SetActive(true);
+    //
+    //     yield return StartCoroutine(LanguageManager.Instance.LoadLanguage(newLang));
+    //     yield return new WaitForSeconds(1.8f);
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    // }
 
     public void OnClickCloseDeathPanel()
     {

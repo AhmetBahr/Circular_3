@@ -3,19 +3,22 @@ using UnityEngine;
 
 public class SkinShopManager : MonoBehaviour
 {
-    [SerializeField] private Transform contentParent;     // ScrollView/Content
-    [SerializeField] private GameObject skinItemPrefab;   // kökte SkinItemUI olmalı
+    [SerializeField] private Transform contentParent;
+    [SerializeField] private GameObject skinItemPrefab;
     [SerializeField] private PlayerSkinSO[] allSkins;
 
     [Header("Scene refs")]
-    [SerializeField] private PlayerSkinApplier playerSkinApplier; // sahnedeki Player
+    [SerializeField] private PlayerSkinApplier playerSkinApplier;
 
     private Dictionary<string, SkinItemUI> _items = new Dictionary<string, SkinItemUI>();
     private string _selectedId = "";
 
+ 
+    private const string kFirstRunSkinSeed = "skin_seed_v1";
+
     void Start()
     {
-        // PlayerSkinApplier sahnede bulun
+        // Player referansı bul
         if (!playerSkinApplier)
         {
             var tagged = GameObject.FindGameObjectWithTag("Player");
@@ -23,9 +26,12 @@ public class SkinShopManager : MonoBehaviour
             if (!playerSkinApplier) playerSkinApplier = FindObjectOfType<PlayerSkinApplier>();
         }
 
+        // >>> EK: YALNIZCA ilk çalıştırmada default skin’i owned+selected yap
+        EnsureDefaultSkinOwnedAndSelectedOnce();
+
         BuildList();
 
-        // kayıtlı seçili skin varsa SAHNEDE ANINDA uygula
+        // kayıtlı seçili skin varsa sahneye uygula
         _selectedId = ProgressManager.GetSelectedSkinId();
         if (!string.IsNullOrEmpty(_selectedId))
         {
@@ -36,9 +42,41 @@ public class SkinShopManager : MonoBehaviour
         RefreshSelectionUI();
     }
 
+    // >>> EK: sadece ilk açılışta çalışır; sonra asla
+    void EnsureDefaultSkinOwnedAndSelectedOnce()
+    {
+        if (PlayerPrefs.GetInt(kFirstRunSkinSeed, 0) == 1) return; // zaten yapıldı
+
+        if (allSkins == null || allSkins.Length == 0) goto Done;
+
+        // unlockedByDefault işaretli İLK skin’i al
+        PlayerSkinSO defaultSkin = null;
+        foreach (var s in allSkins)
+        {
+            if (s != null && s.unlockedByDefault) { defaultSkin = s; break; }
+        }
+
+        if (defaultSkin != null)
+        {
+            // sahiplik ver (zaten sahipse tekrar yazmanın zararı yok)
+            if (!ProgressManager.IsItemBought(defaultSkin.skinId))
+                ProgressManager.MarkItemAsBought(defaultSkin.skinId);
+
+            // eğer daha önce seçilmiş bir şey yoksa, onu seçili yap
+            var alreadySelected = ProgressManager.GetSelectedSkinId();
+            if (string.IsNullOrEmpty(alreadySelected))
+                ProgressManager.SetSelectedSkinId(defaultSkin.skinId);
+        }
+
+    Done:
+        PlayerPrefs.SetInt(kFirstRunSkinSeed, 1);
+        PlayerPrefs.Save();
+    }
+
+    // --- aşağısı senin mevcut kodun ---
+
     void BuildList()
     {
-        // Guard'lar
         if (contentParent == null) { Debug.LogError("[SkinShopManager] contentParent atanmadı"); return; }
         if (skinItemPrefab == null) { Debug.LogError("[SkinShopManager] skinItemPrefab atanmadı"); return; }
         if (allSkins == null) { Debug.LogError("[SkinShopManager] allSkins null"); return; }
@@ -66,14 +104,18 @@ public class SkinShopManager : MonoBehaviour
     {
         if (skin == null) return false;
 
-        // 1) coin düş (başarısızsa false)
+        // ücretsiz/başlangıç skin ise coin düşmeden sahiplik ver
+        if (!skin.RequiresPurchase)
+        {
+            if (!ProgressManager.IsItemBought(skin.skinId))
+                ProgressManager.MarkItemAsBought(skin.skinId);
+            return true;
+        }
+
         if (!ProgressManager.SpendCoins(skin.price))
             return false;
 
-        // 2) sahiplik kaydet (ANINDA)
         ProgressManager.MarkItemAsBought(skin.skinId);
-
-        // Coin UI'si ProgressManager event'iyle güncellenecek (B bölümüne bak)
         return true;
     }
 
@@ -82,10 +124,8 @@ public class SkinShopManager : MonoBehaviour
         if (skin == null) return;
         if (!ProgressManager.IsItemBought(skin.skinId)) return;
 
-        // 1) sahnede HEMEN uygula
         if (playerSkinApplier) playerSkinApplier.ApplySkin(skin);
 
-        // 2) kaydet ve UI'da tek seçiliyi güncelle
         _selectedId = skin.skinId;
         ProgressManager.SetSelectedSkinId(_selectedId);
         RefreshSelectionUI();
