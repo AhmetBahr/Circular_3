@@ -125,6 +125,7 @@ public class ShopItemUI : MonoBehaviour
 
         // UI güncelle
         if (buyButton) buyButton.SetActive(false);
+        RefreshSelectVisuals();
 
         // Coin HUD (varsa)
         var cm = GameManager.Instance ? GameManager.Instance.canvasManager : null;

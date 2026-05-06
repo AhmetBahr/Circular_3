@@ -67,13 +67,6 @@ public class SkinItemUI : MonoBehaviour
             selectButton.onClick.AddListener(OnClickSelect);
         }
 
-        // Başlangıçtan açık skin ise owned/selected yap
-        if (_data != null && _data.unlockedByDefault)
-        {
-            _owned = true;
-            _selected = true;
-        }
-
         Refresh();
     }
 

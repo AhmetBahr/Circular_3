@@ -43,21 +43,26 @@ public class ShopManager : MonoBehaviour
     {
         if (allItems == null) return;
 
+        var selectedKey = ProgressManager.GetSelectedBackgroundId();
+        var hasValidSelection = !string.IsNullOrEmpty(selectedKey) &&
+                                System.Array.Exists(allItems, it => it && Key(it.itemID) == selectedKey);
+
         foreach (var item in allItems)
         {
             if (item == null) continue;
 
             if (item.unlockedByDefault)
             {
-                // ProgressManager BG sahipliğini nasıl tutuyorsa ona göre id ver:
-                // Eğer satın alma/owned tarafında prefix'li ID kullanıyorsan (örn: "bg:forest"):
-                // var purchaseId = Key(item.itemID);
-
-                // Eğer raw id kullanıyorsan (örn: "forest"):
-                var purchaseId = item.itemID;
+                var purchaseId = Key(item.itemID);
 
                 if (!ProgressManager.IsItemBought(purchaseId))
                     ProgressManager.MarkItemAsBought(purchaseId);
+
+                if (!hasValidSelection)
+                {
+                    ProgressManager.SetSelectedBackgroundId(purchaseId);
+                    hasValidSelection = true;
+                }
             }
         }
     }

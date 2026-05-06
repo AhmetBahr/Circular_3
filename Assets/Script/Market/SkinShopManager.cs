@@ -13,9 +13,6 @@ public class SkinShopManager : MonoBehaviour
     private Dictionary<string, SkinItemUI> _items = new Dictionary<string, SkinItemUI>();
     private string _selectedId = "";
 
- 
-    private const string kFirstRunSkinSeed = "skin_seed_v1";
-
     void Start()
     {
         // Player referansı bul
@@ -26,8 +23,7 @@ public class SkinShopManager : MonoBehaviour
             if (!playerSkinApplier) playerSkinApplier = FindObjectOfType<PlayerSkinApplier>();
         }
 
-        // >>> EK: YALNIZCA ilk çalıştırmada default skin’i owned+selected yap
-        EnsureDefaultSkinOwnedAndSelectedOnce();
+        EnsureDefaultSkinOwnedAndSelected();
 
         BuildList();
 
@@ -42,12 +38,9 @@ public class SkinShopManager : MonoBehaviour
         RefreshSelectionUI();
     }
 
-    // >>> EK: sadece ilk açılışta çalışır; sonra asla
-    void EnsureDefaultSkinOwnedAndSelectedOnce()
+    void EnsureDefaultSkinOwnedAndSelected()
     {
-        if (PlayerPrefs.GetInt(kFirstRunSkinSeed, 0) == 1) return; // zaten yapıldı
-
-        if (allSkins == null || allSkins.Length == 0) goto Done;
+        if (allSkins == null || allSkins.Length == 0) return;
 
         // unlockedByDefault işaretli İLK skin’i al
         PlayerSkinSO defaultSkin = null;
@@ -62,15 +55,14 @@ public class SkinShopManager : MonoBehaviour
             if (!ProgressManager.IsItemBought(defaultSkin.skinId))
                 ProgressManager.MarkItemAsBought(defaultSkin.skinId);
 
-            // eğer daha önce seçilmiş bir şey yoksa, onu seçili yap
+            // eğer daha önce seçilmiş geçerli bir şey yoksa, onu seçili yap
             var alreadySelected = ProgressManager.GetSelectedSkinId();
-            if (string.IsNullOrEmpty(alreadySelected))
+            var hasValidSelection = !string.IsNullOrEmpty(alreadySelected) &&
+                                    System.Array.Exists(allSkins, s => s != null && s.skinId == alreadySelected);
+
+            if (!hasValidSelection)
                 ProgressManager.SetSelectedSkinId(defaultSkin.skinId);
         }
-
-    Done:
-        PlayerPrefs.SetInt(kFirstRunSkinSeed, 1);
-        PlayerPrefs.Save();
     }
 
     // --- aşağısı senin mevcut kodun ---

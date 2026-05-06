@@ -27,6 +27,8 @@ public class BackgroundManager : MonoBehaviour
     {
         if (allBackgrounds == null || allBackgrounds.Length == 0) return;
 
+        EnsureDefaultBackgroundOwnedAndSelected();
+
         string selectedKey = ProgressManager.GetSelectedBackgroundId();
         if (string.IsNullOrEmpty(selectedKey)) return;
 
@@ -41,6 +43,24 @@ public class BackgroundManager : MonoBehaviour
             item.backGround_4
         };
         SetBackgrounds(newBackgrounds);
+    }
+
+    private void EnsureDefaultBackgroundOwnedAndSelected()
+    {
+        string selectedKey = ProgressManager.GetSelectedBackgroundId();
+        bool hasValidSelection = !string.IsNullOrEmpty(selectedKey) &&
+                                 Array.Exists(allBackgrounds, it => it && Key(it.itemID) == selectedKey);
+
+        var defaultBackground = Array.Find(allBackgrounds, it => it && it.unlockedByDefault);
+        if (defaultBackground == null) return;
+
+        string defaultKey = Key(defaultBackground.itemID);
+
+        if (!ProgressManager.IsItemBought(defaultKey))
+            ProgressManager.MarkItemAsBought(defaultKey);
+
+        if (!hasValidSelection)
+            ProgressManager.SetSelectedBackgroundId(defaultKey);
     }
 
     /// <summary>
