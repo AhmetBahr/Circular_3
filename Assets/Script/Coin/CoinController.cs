@@ -42,8 +42,16 @@ public class CoinController : MonoBehaviour
 
     private void Awake()
     {
+        var rb2 = GetComponent<Rigidbody2D>();
+        if (rb2 == null)
+            rb2 = gameObject.AddComponent<Rigidbody2D>();
+
+        rb2.bodyType = RigidbodyType2D.Kinematic;
+        rb2.gravityScale = 0f;
+        rb2.simulated = true;
+
         var gameManagerObject = GameObject.Find("GameManager");
-        gameManager = gameManagerObject.GetComponent<GameManager>();
+        if (gameManagerObject) gameManager = gameManagerObject.GetComponent<GameManager>();
     }
 
     void Update()
@@ -90,16 +98,28 @@ public class CoinController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            VibrationManager.VibrateShort();
-            AudioManager.instance.PlaySfx(SfxEvent.Pickup);
-
-            gameManager.MainScore++;
-            gameManager.mainScoreText.text = gameManager.MainScore.ToString();
-            gameManager.playercoin++;
-            
-            // TODO: tatlı bir yok olma animasyonu ekle
-            
-            gameObject.SetActive(false);
+            Collect();
         }
     }
+
+    public void Collect()
+    {
+        if (!gameObject.activeInHierarchy) return;
+
+        VibrationManager.VibrateShort();
+        AudioManager.instance?.PlaySfx(SfxEvent.Pickup);
+
+        if (gameManager)
+        {
+            gameManager.MainScore++;
+            if (gameManager.mainScoreText)
+                gameManager.mainScoreText.text = gameManager.MainScore.ToString();
+            gameManager.playercoin++;
+        }
+
+        // TODO: tatlı bir yok olma animasyonu ekle
+
+        gameObject.SetActive(false);
+    }
+    
 }

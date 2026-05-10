@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0_Orange
   m_EditorClassIdentifier: 
   skinId: Skinn_06
-  displayNameKey: Skin_0
+  displayNameKey: Skin_0_7
   icon: {fileID: 1536258154, guid: c2029096fd8d47f4f8b68ac4c883949b, type: 3}
   price: 10
   unlockedByDefault: 0

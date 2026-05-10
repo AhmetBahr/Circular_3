@@ -13,6 +13,12 @@ public class Bootstrapper : MonoBehaviour
 
         Debug.Log($"[BOOT] Loading '{gameSceneName}'...");
         var op = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Single);
+        if (op == null)
+        {
+            Debug.LogError($"[BOOT] Could not load scene '{gameSceneName}'. Check Build Settings scene name.");
+            yield break;
+        }
+
         op.completed += _ => Debug.Log($"[BOOT] Loaded: {gameSceneName}");
     }
 }

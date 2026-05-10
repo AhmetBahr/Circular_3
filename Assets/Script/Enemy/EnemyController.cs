@@ -112,10 +112,22 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            VibrationManager.VibrateDeath();
-            if (playerController) playerController.PlayerDeath();
-            gameObject.SetActive(false);
+            var player = other.GetComponent<PlayerController>();
+            HandlePlayerContact(player);
         }
+    }
+
+    public void HandlePlayerContact(PlayerController player)
+    {
+        if (!gameObject.activeInHierarchy) return;
+
+        VibrationManager.VibrateDeath();
+
+        if (playerController == null)
+            playerController = player;
+
+        if (playerController) playerController.PlayerDeath();
+        gameObject.SetActive(false);
     }
 
     // Eğer relay kullanmıyorsan ve collider bu objenin altında ise:

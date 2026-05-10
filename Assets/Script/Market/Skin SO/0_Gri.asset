@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0_Gri
   m_EditorClassIdentifier: 
   skinId: Skinn_04
-  displayNameKey: Skin_0
+  displayNameKey: Skin_0_4
   icon: {fileID: 601878576, guid: b9ff4c97e3cf024488c2513c289d87d6, type: 3}
   price: 10
   unlockedByDefault: 0

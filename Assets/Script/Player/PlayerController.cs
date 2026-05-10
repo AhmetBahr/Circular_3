@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
 
     private int direction = 1;
     private float angle = 0f;
+    private Rigidbody2D rb2;
+    private Collider2D playerCollider;
+    private readonly Collider2D[] contactBuffer = new Collider2D[32];
+    private ContactFilter2D contactFilter;
 
     [Header("Stamina Settings")]
     [SerializeField] private float staminaMax = 3f;
@@ -58,6 +62,19 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        rb2 = GetComponent<Rigidbody2D>();
+        if (rb2 != null)
+        {
+            rb2.gravityScale = 0f;
+            rb2.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb2.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+
+        playerCollider = GetComponent<Collider2D>();
+        contactFilter = new ContactFilter2D();
+        contactFilter.NoFilter();
+        contactFilter.useTriggers = true;
+
         if (animator == null) animator = GetComponent<Animator>();
         blendParamHash = Animator.StringToHash(blendParameterName);
 
@@ -105,7 +122,12 @@ public class PlayerController : MonoBehaviour
     {
         HandleInput();
         HandleStamina();
-        MovePlayer();
+    }
+
+    private void FixedUpdate()
+    {
+        MovePlayer(Time.fixedDeltaTime);
+        CheckContacts();
     }
 
     private void ActivateStartButton() => startGameButton.SetActive(true);
@@ -270,20 +292,56 @@ public class PlayerController : MonoBehaviour
         if (col != null) col.enabled = true;
     }
 
-    private void MovePlayer()
+    private void MovePlayer(float deltaTime)
     {
-        angle += direction * currentSpeed * Time.deltaTime;
+        angle += direction * currentSpeed * deltaTime;
         angle = Mathf.Repeat(angle, Mathf.PI * 2f);
 
         float x = centerPoint.position.x + Mathf.Cos(angle) * radius;
         float y = centerPoint.position.y + Mathf.Sin(angle) * radius;
-        transform.position = new Vector3(x, y, transform.position.z);
+        Vector2 nextPosition = new Vector2(x, y);
 
         float lookAngle = angle * Mathf.Rad2Deg;
-        spinAccum += direction * spinSpeedDegPerSec * Time.deltaTime;
+        spinAccum += direction * spinSpeedDegPerSec * deltaTime;
         spinAccum = Mathf.Repeat(spinAccum, 360f);
 
         float totalZ = lookAngle + spinAccum;
-        transform.rotation = Quaternion.Euler(0f, 0f, totalZ);
+
+        if (rb2 != null)
+        {
+            rb2.MovePosition(nextPosition);
+            rb2.MoveRotation(totalZ);
+        }
+        else
+        {
+            transform.position = new Vector3(nextPosition.x, nextPosition.y, transform.position.z);
+            transform.rotation = Quaternion.Euler(0f, 0f, totalZ);
+        }
+    }
+
+    private void CheckContacts()
+    {
+        if (playerCollider == null || !playerCollider.enabled) return;
+
+        int count = playerCollider.Overlap(contactFilter, contactBuffer);
+        for (int i = 0; i < count; i++)
+        {
+            Collider2D hit = contactBuffer[i];
+            if (hit == null || hit == playerCollider) continue;
+
+            var coin = hit.GetComponentInParent<CoinController>();
+            if (coin != null)
+            {
+                coin.Collect();
+                continue;
+            }
+
+            var enemy = hit.GetComponentInParent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.HandlePlayerContact(this);
+                return;
+            }
+        }
     }
 }

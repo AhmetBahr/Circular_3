@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0_Green
   m_EditorClassIdentifier: 
   skinId: Skinn_03
-  displayNameKey: Skin_0
+  displayNameKey: Skin_0_2
   icon: {fileID: 696731431, guid: 7d2f361176dc86f4aa9bb83582e187ec, type: 3}
   price: 10
   unlockedByDefault: 0

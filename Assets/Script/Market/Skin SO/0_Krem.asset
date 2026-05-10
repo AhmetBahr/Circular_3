@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0_Krem
   m_EditorClassIdentifier: 
   skinId: Skinn_05
-  displayNameKey: Skin_0
+  displayNameKey: Skin_0_6
   icon: {fileID: 191473988, guid: 58fcbb8ca652c224e81f6150c42635ef, type: 3}
   price: 10
   unlockedByDefault: 0

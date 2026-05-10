@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f93d0336ffa91a14680137d81b8c0d1e, type: 3}
   m_Name: item_12
   m_EditorClassIdentifier: 
-  itemName: item_12
+  itemNameKey: item_12
   itemID: BG_12
-  itemPrice: 10
+  itemPrice: 100
+  unlockedByDefault: 0
   itemIcon: {fileID: 21300000, guid: b87667969d01bfd4ca7c3bef61e2b843, type: 3}
   backGround_1: {fileID: 21300000, guid: 5cdcd329a87078148b7a186bf0b126cd, type: 3}
   backGround_2: {fileID: 21300000, guid: 9e9293f312ce7384594b270f0a8a72d7, type: 3}

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 0_Red
   m_EditorClassIdentifier: 
   skinId: Skinn_07
-  displayNameKey: Skin_0
+  displayNameKey: Skin_0_1
   icon: {fileID: -798865329, guid: ab71ae4414653744480a4019c7a21949, type: 3}
   price: 10
   unlockedByDefault: 0
   blendIndex: 0
   overridePlayerColor: 1
-  playerColor: {r: 0.39607847, g: 0.21960786, b: 0.25882354, a: 1}
+  playerColor: {r: 0.5566038, g: 0.13915095, b: 0.23191829, a: 1}
   playerColorHex: 

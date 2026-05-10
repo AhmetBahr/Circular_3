@@ -17,10 +17,17 @@ public class EnemyBodyTriggerHandler : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-      
         if (_enemyController != null)
         {
             _enemyController.HandleTriggerEnter2D(other);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_enemyController != null)
+        {
+            _enemyController.HandleTriggerEnter2D(collision.collider);
         }
     }
 }
